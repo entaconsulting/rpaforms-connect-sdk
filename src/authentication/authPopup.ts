@@ -3,11 +3,12 @@ import {
   PublicClientApplication,
   SilentRequest,
 } from "@azure/msal-browser";
+import { loginRequest, msalConfig } from "./authConfig";
 import { AccountNotFoundError } from "./authError";
 
 // configuration parameters are located at authConfig.js
 const myMSALObj = new PublicClientApplication(msalConfig);
-let username: string = "";
+let username = "";
 
 export const selectAccount = () => {
   const currentAccounts = myMSALObj.getAllAccounts();
@@ -26,7 +27,11 @@ export const selectAccount = () => {
 export const isAutenticated = () => !!username;
 
 export const signIn = async () => {
-  await myMSALObj.loginPopup(loginRequest);
+  try {
+    await myMSALObj.loginPopup(loginRequest);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const signOut = async () => {
@@ -47,7 +52,6 @@ export const getTokenPopup = async () => {
   if (!account) {
     throw new AccountNotFoundError("Account not found.");
   }
-  let error;
   const request: SilentRequest = {
     account,
     scopes: [
