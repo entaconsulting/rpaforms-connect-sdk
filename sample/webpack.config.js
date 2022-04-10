@@ -2,7 +2,7 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./src/sample/index.ts",
+  entry: "./src/index.ts",
   devtool: "inline-source-map",
   mode: "development",
   module: {
@@ -12,7 +12,6 @@ module.exports = {
         use: [
           {
             loader: "ts-loader",
-            options: { configFile: "tsconfig.webpack.json" },
           },
         ],
         exclude: /node_modules/,

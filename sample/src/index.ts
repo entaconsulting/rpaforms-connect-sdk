@@ -1,9 +1,4 @@
-import {
-  isAutenticated,
-  selectAccount,
-  signIn,
-  signOut,
-} from "../authentication/authPopup";
+import { authentication } from "rpaforms-connect-sdk";
 
 // Select DOM elements to work with
 const container = document.getElementById("container");
@@ -11,13 +6,15 @@ const signInButton = document.getElementById("SignIn");
 
 const setSignInButton = () => {
   if (!signInButton) return;
-  signInButton.innerHTML = isAutenticated() ? "Sign Out" : "Sign In";
+  signInButton.innerHTML = authentication.isAutenticated()
+    ? "Sign Out"
+    : "Sign In";
 };
 const handleSignInOut = async () => {
-  if (!isAutenticated()) {
-    await signIn();
+  if (!authentication.isAutenticated()) {
+    await authentication.signIn();
   } else {
-    await signOut();
+    await authentication.signOut();
   }
   setSignInButton();
 };
@@ -26,7 +23,7 @@ const init = () => {
   if (signInButton) {
     signInButton.addEventListener("click", handleSignInOut);
   }
-  selectAccount();
+  authentication.selectAccount();
   setSignInButton();
 };
 
