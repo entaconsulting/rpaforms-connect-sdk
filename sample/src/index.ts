@@ -27,4 +27,10 @@ const init = () => {
   setSignInButton();
 };
 
-init();
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
+    init();
+  },
+  false
+);
