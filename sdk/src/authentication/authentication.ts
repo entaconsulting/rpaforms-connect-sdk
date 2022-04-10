@@ -1,14 +1,32 @@
 import {
+  Configuration,
   InteractionRequiredAuthError,
   PublicClientApplication,
   SilentRequest,
 } from "@azure/msal-browser";
-import { loginRequest, msalConfig } from "./authConfig";
+import { loginRequest, msalConfig } from "./msalConfig";
 import { AccountNotFoundError } from "./authError";
 
-// configuration parameters are located at authConfig.js
-const myMSALObj = new PublicClientApplication(msalConfig);
+// common configuration parameters are located at msalConfig.js
+let myMSALObj: PublicClientApplication;
 let username = "";
+
+export const configureAuth = (options: {
+  clientId: string;
+  authority: string;
+  redirectUri: string;
+}) => {
+  const authConfig: Configuration = {
+    ...msalConfig,
+    auth: {
+      clientId: options.clientId,
+      authority: options.authority,
+      redirectUri: options.redirectUri,
+    },
+  };
+
+  myMSALObj = new PublicClientApplication(authConfig);
+};
 
 export const selectAccount = () => {
   const currentAccounts = myMSALObj.getAllAccounts();
@@ -27,8 +45,14 @@ export const selectAccount = () => {
 export const isAutenticated = () => !!username;
 
 export const signIn = async () => {
+  if (!myMSALObj)
+    throw new Error(
+      "Authorization not configured. Please call configureAuth before signIn."
+    );
   try {
-    await myMSALObj.loginPopup(loginRequest);
+    const result = await myMSALObj.loginPopup(loginRequest);
+    if (!result.account) throw new Error("No account info after login"); //this shouldn't happen
+    username = result.account?.username;
   } catch (e) {
     console.log(e);
   }
