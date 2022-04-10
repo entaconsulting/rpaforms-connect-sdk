@@ -1,14 +1,17 @@
 import { authentication } from "rpaforms-connect-sdk";
 
 // Select DOM elements to work with
-const container = document.getElementById("container");
-const signInButton = document.getElementById("SignIn");
+const signInButton = document.getElementById("SignIn")!;
+const accountContainer = document.getElementById("account")!;
 
-const setSignInButton = () => {
-  if (!signInButton) return;
-  signInButton.innerHTML = authentication.isAutenticated()
-    ? "Sign Out"
-    : "Sign In";
+const setAccountInfo = () => {
+  if (authentication.isAutenticated()) {
+    signInButton.innerHTML = "Sign Out";
+    accountContainer.innerHTML = `Signed in account: ${authentication.getCurrentUsername()}`;
+  } else {
+    signInButton.innerHTML = "Sign In";
+    accountContainer.innerHTML = ``;
+  }
 };
 const handleSignInOut = async () => {
   if (!authentication.isAutenticated()) {
@@ -16,7 +19,7 @@ const handleSignInOut = async () => {
   } else {
     await authentication.signOut();
   }
-  setSignInButton();
+  setAccountInfo();
 };
 
 const init = () => {
@@ -29,7 +32,7 @@ const init = () => {
     signInButton.addEventListener("click", handleSignInOut);
   }
   authentication.selectAccount();
-  setSignInButton();
+  setAccountInfo();
 };
 
 document.addEventListener(

@@ -43,6 +43,7 @@ export const selectAccount = () => {
 };
 
 export const isAutenticated = () => !!username;
+export const getCurrentUsername = () => username;
 
 export const signIn = async () => {
   if (!myMSALObj)
