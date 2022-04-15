@@ -1,6 +1,6 @@
 {
-  "name": "rpaforms-connect-sdk",
-  "version": "0.1.2",
+  "name": "@entaconsulting/rpaforms-connect-sdk",
+  "version": "0.2.0",
   "description": "SDK for simplifing the use or RPA Forms Connect in JS apps.",
   "author": "Enta Consulting",
   "main": "dist/rpaforms-connect-sdk.js",

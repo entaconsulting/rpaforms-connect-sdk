@@ -4,29 +4,12 @@ import {
   PublicClientApplication,
   SilentRequest,
 } from "@azure/msal-browser";
-import { loginRequest, msalConfig } from "./msalConfig";
+import { msalConfig, tokenRequest } from "./msalConfig";
 import { AccountNotFoundError } from "./authError";
+import { myMSALObj } from "./configureAuth";
 
 // common configuration parameters are located at msalConfig.js
-let myMSALObj: PublicClientApplication;
 let username = "";
-
-export const configureAuth = (options: {
-  clientId: string;
-  authority: string;
-  redirectUri: string;
-}) => {
-  const authConfig: Configuration = {
-    ...msalConfig,
-    auth: {
-      clientId: options.clientId,
-      authority: options.authority,
-      redirectUri: options.redirectUri,
-    },
-  };
-
-  myMSALObj = new PublicClientApplication(authConfig);
-};
 
 export const selectAccount = () => {
   const currentAccounts = myMSALObj.getAllAccounts();
@@ -51,7 +34,7 @@ export const signIn = async () => {
       "Authorization not configured. Please call configureAuth before signIn."
     );
   try {
-    const result = await myMSALObj.loginPopup(loginRequest);
+    const result = await myMSALObj.loginPopup(tokenRequest);
     if (!result.account) throw new Error("No account info after login"); //this shouldn't happen
     username = result.account?.username;
   } catch (e) {
@@ -73,18 +56,20 @@ export const getTokenPopup = async () => {
    * See here for more info on account retrieval:
    * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
    */
+  if (!username) {
+    throw new Error("Not autenticated.");
+  }
+
   const account = myMSALObj.getAccountByUsername(username);
   if (!account) {
     throw new AccountNotFoundError("Account not found.");
   }
   const request: SilentRequest = {
     account,
-    scopes: [
-      "api://localhost/a3422c27-265d-4cdc-bb0a-d30ecbd799a7/access_as_user",
-    ],
+    ...tokenRequest,
   };
   try {
-    return myMSALObj.acquireTokenSilent(request);
+    return await myMSALObj.acquireTokenSilent(request);
   } catch (e) {
     console.warn("silent token acquisition fails. acquiring token using popup");
     if (!(e instanceof InteractionRequiredAuthError)) {
