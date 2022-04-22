@@ -1,7 +1,9 @@
 import {
+  AuthenticationResult,
   Configuration,
   InteractionRequiredAuthError,
   PublicClientApplication,
+  ServerError,
   SilentRequest,
 } from "@azure/msal-browser";
 import { msalConfig, tokenRequest } from "./msalConfig";
@@ -10,6 +12,7 @@ import { myMSALObj } from "./configureAuth";
 
 // common configuration parameters are located at msalConfig.js
 let username = "";
+let forceLogin = false;
 
 export const selectAccount = () => {
   const currentAccounts = myMSALObj.getAllAccounts();
@@ -26,6 +29,7 @@ export const selectAccount = () => {
 };
 
 export const isAutenticated = () => !!username;
+export const needsExplicitLogin = () => forceLogin;
 export const getCurrentUsername = () => username;
 
 export const signIn = async () => {
@@ -33,9 +37,21 @@ export const signIn = async () => {
     throw new Error(
       "Authorization not configured. Please call configureAuth before signIn."
     );
-  const result = await myMSALObj.loginPopup(tokenRequest);
-  if (!result.account) throw new Error("No account info after login"); //this shouldn't happen
-  username = result.account?.username;
+  const request = forceLogin
+    ? {
+        ...tokenRequest,
+        prompt: "login",
+      }
+    : tokenRequest;
+  try {
+    const result = await myMSALObj.loginPopup(request);
+    if (!result.account) throw new Error("No account info after login"); //this shouldn't happen
+    forceLogin = false;
+    username = result.account?.username;
+  } catch (e) {
+    forceLogin = true;
+    throw e;
+  }
 };
 
 export const signOut = async () => {
@@ -45,6 +61,7 @@ export const signOut = async () => {
 
   await myMSALObj.logoutPopup(logoutRequest);
   username = "";
+  forceLogin = false;
 };
 
 export const getTokenPopup = async () => {
@@ -80,4 +97,13 @@ export const getTokenPopup = async () => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const withAuthentication = (func: () => Promise<unknown>) => {
+  return async () => {
+    if (!isAutenticated()) {
+      await signIn();
+    }
+    await func();
+  };
 };

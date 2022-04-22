@@ -1,6 +1,7 @@
 export type CreateFormInstanceResult = {
-  sharedFormId: string;
-  sharedFormToken: string;
+  formInstanceId: string;
+  formInstanceToken: string;
+  formInstanceUri: string;
 };
 
 export type FormInstanceList = {

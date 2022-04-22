@@ -31,5 +31,22 @@ module.exports = {
       filename: "index.html",
       template: "./src/index.html",
     }),
+    new HtmlWebpackPlugin({
+      filename: "blank.html",
+      template: "./src/blank.html",
+      inject: false,
+    }),
   ],
+  devServer: {
+    compress: true,
+    port: 5500,
+    open: true,
+    static: {
+      directory: path.resolve(__dirname, "dist"),
+      watch: true,
+    },
+    watchFiles: {
+      paths: ["src/**/*"],
+    },
+  },
 };

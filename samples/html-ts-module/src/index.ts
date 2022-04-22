@@ -33,18 +33,18 @@ const listFormInstancesResult = document.getElementById(
 
 const setAccountInfo = () => {
   if (authentication.isAutenticated()) {
-    signInButton.innerHTML = "Sign Out";
-    accountContainer.innerHTML = `Signed in account: ${authentication.getCurrentUsername()}`;
+    signInButton.hidden = true;
   } else {
+    signInButton.hidden = !authentication.needsExplicitLogin();
     signInButton.innerHTML = "Sign In";
-    accountContainer.innerHTML = ``;
   }
 };
-const handleSignInOut = async () => {
+
+const handleSignIn = async () => {
   if (!authentication.isAutenticated()) {
-    await authentication.signIn();
-  } else {
-    await authentication.signOut();
+    try {
+      await authentication.signIn();
+    } catch {}
   }
   setAccountInfo();
 };
@@ -85,26 +85,28 @@ const init = () => {
     authentication: {
       clientId: "18db5397-4d46-4300-9e36-6d8c5c28a818",
       authority: "https://login.microsoftonline.com/organizations",
-      redirectUri: "http://localhost:5500/sample/dist/",
+      redirectUri: "http://localhost:5500/sample/dist/blank.html",
     },
     serviceUrl: "https://localhost:6001/api",
   });
 
-  signInButton.addEventListener("click", handleSignInOut);
-  authentication.selectAccount();
+  signInButton.addEventListener("click", handleSignIn);
   setAccountInfo();
 
   listFormDefinitionsButton.addEventListener(
     "click",
-    handleListFormDefinitions
+    authentication.withAuthentication(handleListFormDefinitions)
   );
 
   createFormDefinitionButton.addEventListener(
     "click",
-    handleCreateFormDefinition
+    authentication.withAuthentication(handleCreateFormDefinition)
   );
 
-  listFormInstancesButton.addEventListener("click", handleListFormInstances);
+  listFormInstancesButton.addEventListener(
+    "click",
+    authentication.withAuthentication(handleListFormInstances)
+  );
 };
 
 document.addEventListener(
