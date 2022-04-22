@@ -4,9 +4,27 @@ Esta librería permite incorporar las funcionalidades de RPA Forms Connect en cu
 
 ## Instalación
 
+### Paquete Node
+
+```javascript
 npm install @entaconsulting/rpaforms-connect-sdk
 
 yarn add @entaconsulting/rpaforms-connect-sdk
+```
+
+### Referencia global
+
+```html
+<script src="https://unpkg.com/@entaconsulting/rpaforms-connect-sdk"></script>
+```
+
+En el caso de utilizar el sdk como referencia global, todas las funciones se encuentran disponibles dentro del espacio de nombres "rpaFormsConnectSdk". Por ejemplo:
+
+```javascript
+rpaFormsConnectSdk.authentication.selectAccount();
+```
+
+Ver ejemplo de este tipo de uso en [samples/html-static](./samples/html-static)
 
 ## Configurar autenticación Azure AD
 
