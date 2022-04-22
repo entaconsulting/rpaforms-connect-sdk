@@ -61,3 +61,7 @@ Es la URI de la página donde se inicializa el SDK, y debe coincidir con la URL 
 ## Referencia
 
 <https://entaconsulting.github.io/rpaforms-connect-sdk/>
+
+## Repositorio
+
+<https://github.com/entaconsulting/rpaforms-connect-sdk>

@@ -15,3 +15,7 @@ En la carpeta samples se incluyen ejemplos de uso de la librería.
 ## Referencia
 
 <https://entaconsulting.github.io/rpaforms-connect-sdk/>
+
+## Repositorio
+
+<https://github.com/entaconsulting/rpaforms-connect-sdk>
