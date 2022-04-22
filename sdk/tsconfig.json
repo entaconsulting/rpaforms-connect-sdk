@@ -10,7 +10,7 @@
     "outDir": "dist",
     "lib": ["ES2016", "DOM"],
     "target": "es6",
-    "module": "ES2015",
+    "module": "es6",
     "moduleResolution": "node",
     "rootDir": "src"
   }
