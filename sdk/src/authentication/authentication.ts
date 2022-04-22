@@ -33,13 +33,9 @@ export const signIn = async () => {
     throw new Error(
       "Authorization not configured. Please call configureAuth before signIn."
     );
-  try {
-    const result = await myMSALObj.loginPopup(tokenRequest);
-    if (!result.account) throw new Error("No account info after login"); //this shouldn't happen
-    username = result.account?.username;
-  } catch (e) {
-    console.log(e);
-  }
+  const result = await myMSALObj.loginPopup(tokenRequest);
+  if (!result.account) throw new Error("No account info after login"); //this shouldn't happen
+  username = result.account?.username;
 };
 
 export const signOut = async () => {
