@@ -1,0 +1,72 @@
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@entaconsulting/rpaforms-connect-sdk</title><meta name="description" content="Documentation for @entaconsulting/rpaforms-connect-sdk"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@entaconsulting/rpaforms-connect-sdk</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>@entaconsulting/rpaforms-connect-sdk </h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#rpa-forms-connect-sdk" id="rpa-forms-connect-sdk" style="color: inherit; text-decoration: none;">
+  <h1>RPA Forms Connect SDK</h1>
+</a>
+<p>Esta librería permite incorporar las funcionalidades de RPA Forms Connect en cualquier aplicación Javascript.</p>
+
+<a href="#instalación" id="instalación" style="color: inherit; text-decoration: none;">
+  <h2>Instalación</h2>
+</a>
+<p>npm install @entaconsulting/rpaforms-connect-sdk</p>
+<p>yarn add @entaconsulting/rpaforms-connect-sdk</p>
+
+<a href="#configurar-autenticación-azure-ad" id="configurar-autenticación-azure-ad" style="color: inherit; text-decoration: none;">
+  <h2>Configurar autenticación Azure AD</h2>
+</a>
+
+<a href="#registrar-una-nueva-aplicación-azure-ad" id="registrar-una-nueva-aplicación-azure-ad" style="color: inherit; text-decoration: none;">
+  <h3>Registrar una nueva aplicación Azure AD</h3>
+</a>
+<ol>
+<li>En el portal Azure, registrar una nueva aplicación en Azure AD</li>
+<li>Copiar el Client ID de la aplicación registrada, que se utilizará más adelante en la inicialización del SDK</li>
+</ol>
+
+<a href="#configurar-autenticación-spa" id="configurar-autenticación-spa" style="color: inherit; text-decoration: none;">
+  <h3>Configurar autenticación SPA</h3>
+</a>
+<ol>
+<li><p>En la sección &quot;Autenticación&quot; de la configuración del registro de aplicación Azure AD, agregar plataforma &quot;Single Page Application&quot; y configurar la URL de redirección a la ruta de la aplicación. Esta ruta debe coincidir con la página en donde se inicializará el SDK.</p>
+<p> Por ejemplo: <code>https://myconnectapp.entaconsulting.com/</code></p>
+</li>
+</ol>
+
+<a href="#asignar-permiso-de-acceso-a-la-api-rpa-forms" id="asignar-permiso-de-acceso-a-la-api-rpa-forms" style="color: inherit; text-decoration: none;">
+  <h3>Asignar permiso de acceso a la API RPA Forms</h3>
+</a>
+<p>En la sección &quot;Permisos de API&quot; de la configuración del registro de aplicación Azure AD</p>
+<ol>
+<li>Agregar un permiso</li>
+<li>Seleccionar &quot;APIs que usa mi organización&quot;</li>
+<li>Buscar y seleccionar &quot;RPA Forms&quot; (b782e2e8-9682-4898-b211-a304714f4f6b)</li>
+<li>Seleccionar &quot;Permisos delegados&quot;</li>
+<li>Seleccionar permiso &quot;access_as_user&quot;</li>
+<li>Finalmente seleccionar &quot;Otorgar consentimiento de administrador&quot; (esto sólo puede hacerlo un administrador global de Azure)</li>
+</ol>
+
+<a href="#inicializar-sdk" id="inicializar-sdk" style="color: inherit; text-decoration: none;">
+  <h2>Inicializar SDK</h2>
+</a>
+<p>El SDK debe ser configurado al cargar la página donde será utilizado.</p>
+<pre><code class="language-javascript"><span class="hl-0">initialize</span><span class="hl-1">({</span><br/><span class="hl-1">    </span><span class="hl-2">authentication:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-2">clientId:</span><span class="hl-1"> </span><span class="hl-3">&quot;{0000000-0000-0000-000000000000}&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-2">authority:</span><span class="hl-1"> </span><span class="hl-3">&quot;https://login.microsoftonline.com/&lt;ID tenant Azure&gt;&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-2">redirectUri:</span><span class="hl-1"> </span><span class="hl-3">&quot;&lt;URI de la página donde se inicializa el SDK&gt;&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">  });</span>
+</code></pre>
+
+<a href="#clientid" id="clientid" style="color: inherit; text-decoration: none;">
+  <h3>clientId</h3>
+</a>
+<p>Es el ClientID de la app registrada anteriormente en el paso <a href="#Registrar-una-nueva-aplicaci%C3%B3n-Azure-AD">Registrar una nueva aplicación Azure AD</a>.</p>
+
+<a href="#authority" id="authority" style="color: inherit; text-decoration: none;">
+  <h3>authority</h3>
+</a>
+<p>Es la URL de Microsoft Identity seguida del ID del tenant donde se registró tu aplicación</p>
+
+<a href="#redirecturi" id="redirecturi" style="color: inherit; text-decoration: none;">
+  <h3>redirectUri</h3>
+</a>
+<p>Es la URI de la página donde se inicializa el SDK, y debe coincidir con la URL de redirección configurada en el paso <a href="#Configurar-autenticaci%C3%B3n-SPA">Configurar autenticación SPA</a>.</p>
+
+<a href="#referencia" id="referencia" style="color: inherit; text-decoration: none;">
+  <h2>Referencia</h2>
+</a>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li><li class=" tsd-kind-namespace"><a href="modules/authentication.html">authentication</a></li><li class=" tsd-kind-namespace"><a href="modules/formInstance.html">form<wbr/>Instance</a></li><li class=" tsd-kind-namespace"><a href="modules/userProfile.html">user<wbr/>Profile</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-function"><a href="modules.html#initialize" class="tsd-kind-icon">initialize</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
