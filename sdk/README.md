@@ -24,7 +24,7 @@ En el caso de utilizar el sdk como referencia global, todas las funciones se enc
 rpaFormsConnectSdk.authentication.selectAccount();
 ```
 
-Ver ejemplo de este tipo de uso en [samples/html-static](./samples/html-static)
+Ver ejemplo de este tipo de uso en [samples/html-static](../samples/html-static)
 
 ## Configurar autenticación Azure AD
 
