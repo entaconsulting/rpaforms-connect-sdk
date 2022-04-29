@@ -1,6 +1,6 @@
 {
   "name": "@entaconsulting/rpaforms-connect-sdk",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "SDK for simplifing the use or RPA Forms Connect in JS apps.",
   "author": "Enta Consulting",
   "main": "dist/rpaforms-connect-sdk.js",
@@ -9,6 +9,10 @@
     "dist"
   ],
   "homepage": "https://www.entaconsulting.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/entaconsulting/rpaforms-connect-sdk"
+  },
   "dependencies": {
     "@azure/msal-browser": "^2.23.0",
     "axios": "^0.26.1"
