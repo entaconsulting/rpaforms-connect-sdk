@@ -4,7 +4,3 @@ export type FormDefinition = {
   description: string;
   disabled: boolean;
 };
-
-export type UserProfile = {
-  id: string;
-};

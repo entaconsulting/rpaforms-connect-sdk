@@ -5,7 +5,7 @@ const rpaFormsConnectSdkConfig = {
     authority: "https://login.microsoftonline.com/organizations",
     redirectUri: "http://localhost:5500/samples/html-static/blank.html",
   },
-  serviceUrl: "https://localhost:6001/api",
+  serviceUrl: "https://app.rpaforms.com/api",
 };
 
 //inicialización al finalizar la carga de la página
