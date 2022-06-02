@@ -29,8 +29,11 @@ export const listUserInstances = async () => {
 };
 export const getInstanceUri = async (id: string) => {
   const endpoint = `ShareForm/GetSharedKey/${id}`;
-  const response = await getHttpRpaFormsClient().get<string>(endpoint);
-  return buildFormInstanceUri(response.data);
+  const response = await getHttpRpaFormsClient().get<{
+    sharedFormId: string;
+    sharedFormToken: string;
+  }>(endpoint);
+  return buildFormInstanceUri(response.data.sharedFormToken);
 };
 
 export const deleteInstance = async (id: string) => {
