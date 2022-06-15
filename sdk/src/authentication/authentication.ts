@@ -1,12 +1,8 @@
 import {
-  AuthenticationResult,
-  Configuration,
   InteractionRequiredAuthError,
-  PublicClientApplication,
-  ServerError,
   SilentRequest,
 } from "@azure/msal-browser";
-import { msalConfig, tokenRequest } from "./msalConfig";
+import { tokenRequest } from "./msalConfig";
 import { AccountNotFoundError } from "./authError";
 import { myMSALObj } from "./configureAuth";
 
