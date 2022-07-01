@@ -2,9 +2,8 @@ import {
   InteractionRequiredAuthError,
   SilentRequest,
 } from "@azure/msal-browser";
-import { tokenRequest } from "./msalConfig";
 import { AccountNotFoundError } from "./authError";
-import { myMSALObj } from "./configureAuth";
+import { myMSALObj, tokenRequest } from "./configureAuth";
 
 // common configuration parameters are located at msalConfig.js
 let username = "";

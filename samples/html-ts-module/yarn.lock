@@ -2,29 +2,32 @@
 # yarn lockfile v1
 
 
-"@azure/msal-browser@^2.23.0":
-  version "2.23.0"
-  resolved "https://registry.yarnpkg.com/@azure/msal-browser/-/msal-browser-2.23.0.tgz#24fc58e9d1314833b09d3f52ba4e53f526cfe0de"
-  integrity sha512-qxyWmsP/pf+xJFEhMgiJ0r1v6TjF+x8iMWYU5R63Lb/fjQfKalaNX9f5D6GbJYJS5s9OF3abtdGtB/Lxea15mQ==
+"@azure/msal-browser@^2.26.0":
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/@azure/msal-browser/-/msal-browser-2.26.0.tgz#32d0c4cfe29a34030fd22106697a2d866893ac87"
+  integrity sha512-mSyZORSgeMEWz5Wo5alUqjxP/HKt/XcViZqc3dnKFM9347qYPIWsAlzHkEmmafNr1VGUo7MeqB0emZCOQrl04w==
   dependencies:
-    "@azure/msal-common" "^6.2.0"
+    "@azure/msal-common" "^7.0.0"
 
-"@azure/msal-common@^6.2.0":
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/@azure/msal-common/-/msal-common-6.2.0.tgz#715fd68df92ed230913d1d725e9f9b09f799a66c"
-  integrity sha512-SU2/vfbKn1WvtKM8tsBKZAbmRJvO8E3H773ZT0GGKuO9rwLfxP5qOzTHV5crCEm8DgvL/IppmWh2lsUFieDi1A==
+"@azure/msal-common@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@azure/msal-common/-/msal-common-7.0.0.tgz#f4b52c6d9591cf8720dcb24c1d21fce2d186f871"
+  integrity sha512-EkaHGjv0kw1RljhboeffM91b+v9d5VtmyG+0a/gvdqjbLu3kDzEfoaS5BNM9QqMzbxgZylsjAjQDtxdHLX/ziA==
+
+"@azure/msal-react@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@azure/msal-react/-/msal-react-1.4.2.tgz#b9cce37e977cfca2b70018ebacb5d38c0038aff6"
+  integrity sha512-5d663wBJRhnAM16QSR2wHEKFonI3STNpOuq1Tmelg2fAyOXZUxyCxyFlWOE/FZuhbXS3C4VmLHaEYHMnofRcyQ==
 
 "@discoveryjs/json-ext@^0.5.0":
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@entaconsulting/rpaforms-connect-sdk@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@entaconsulting/rpaforms-connect-sdk/-/rpaforms-connect-sdk-0.2.4.tgz#909d001252af245b574c49750811fbd6abbb9ced"
-  integrity sha512-botwcN6Q9zypN/vJ+eR5YdTPESd+Kq/lNOwdCYzM4KbtWe9fhM1Eyo00HgzS5opQQat/skdDFQTjQB9QBzvhnw==
+"@entaconsulting/rpaforms-connect-sdk@file:.yalc/@entaconsulting/rpaforms-connect-sdk":
+  version "0.3.1"
   dependencies:
-    "@azure/msal-browser" "^2.23.0"
+    axios "^0.26.1"
 
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.3"
@@ -423,6 +426,13 @@ async@^2.6.2:
   integrity sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==
   dependencies:
     lodash "^4.17.14"
+
+axios@^0.26.1:
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.26.1.tgz#1ede41c51fcf51bbbd6fd43669caaa4f0495aaa9"
+  integrity sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==
+  dependencies:
+    follow-redirects "^1.14.8"
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -980,6 +990,11 @@ follow-redirects@^1.0.0:
   version "1.14.9"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.9.tgz#dd4ea157de7bfaf9ea9b3fbd85aa16951f78d8d7"
   integrity sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==
+
+follow-redirects@^1.14.8:
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.1.tgz#0ca6a452306c9b276e4d3127483e29575e207ad5"
+  integrity sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==
 
 forwarded@0.2.0:
   version "0.2.0"

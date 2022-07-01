@@ -37,10 +37,3 @@ export const msalConfig = {
 export const loginRequest = {
   scopes: ["openid", "profile"],
 };
-
-// Add scopes here for access token to be used at Microsoft Graph API endpoints.
-export const tokenRequest = {
-  scopes: [
-    "api://rpaforms.com/b782e2e8-9682-4898-b211-a304714f4f6b/access_as_user",
-  ],
-};

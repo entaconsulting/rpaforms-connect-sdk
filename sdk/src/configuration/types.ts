@@ -3,6 +3,7 @@ export type RpaFormsSdkConfiguration = {
     clientId: string;
     authority: string;
     redirectUri: string;
+    appIdURI?: string;
   };
   serviceUrl?: string;
 };

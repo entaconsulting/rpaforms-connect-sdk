@@ -1,0 +1,10 @@
+{
+  "version": "v1",
+  "packages": {
+    "@entaconsulting/rpaforms-connect-sdk": {
+      "signature": "09687dd21b9d2a819b13badf162bf433",
+      "file": true,
+      "replaced": "^0.3.1"
+    }
+  }
+}

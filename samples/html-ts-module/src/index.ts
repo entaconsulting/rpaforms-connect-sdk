@@ -83,11 +83,13 @@ const handleCreateFormDefinition = async () => {
 const init = () => {
   initialize({
     authentication: {
-      clientId: "18db5397-4d46-4300-9e36-6d8c5c28a818",
+      clientId: "d3acdcda-130c-419a-b9d6-6ca1e0d2ceef",
       authority: "https://login.microsoftonline.com/organizations",
       redirectUri: "http://localhost:5500/sample/dist/blank.html",
+      appIdURI:
+        "api://rpaforms-dev.azurewebsites.net/d3acdcda-130c-419a-b9d6-6ca1e0d2ceef",
     },
-    serviceUrl: "https://localhost:6001/api",
+    serviceUrl: "https://app.rpaforms.com/api",
   });
 
   signInButton.addEventListener("click", handleSignIn);

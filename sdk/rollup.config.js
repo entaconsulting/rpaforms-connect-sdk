@@ -20,7 +20,7 @@ export default [
     ],
     plugins: [
       peerDepsExternal(),
-      resolve(),
+      resolve({ browser: true }),
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
       // Delete dist folder with each new build.

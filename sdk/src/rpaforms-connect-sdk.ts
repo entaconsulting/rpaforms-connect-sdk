@@ -1,6 +1,7 @@
-import * as authentication from "./authentication/authentication";
-import * as userProfile from "./api/userProfile/userProfile";
-import * as formInstance from "./api/formInstance/formInstance";
-import initialize from "./configuration/initialize";
-
-export { initialize, authentication, userProfile, formInstance };
+export * as authentication from "./authentication/authentication";
+export * as userProfile from "./api/userProfile/userProfile";
+export * as formInstance from "./api/formInstance/formInstance";
+export { default as initialize } from "./configuration/initialize";
+export * from "./api/userProfile/types";
+export * from "./api/formInstance/types";
+export * from "./configuration/types";

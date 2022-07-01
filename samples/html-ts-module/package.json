@@ -5,7 +5,9 @@
   "main": "./dist/index.js",
   "license": "MIT",
   "dependencies": {
-    "@entaconsulting/rpaforms-connect-sdk": "^0.2.4"
+    "@azure/msal-browser": "^2.26.0",
+    "@azure/msal-react": "^1.4.2",
+    "@entaconsulting/rpaforms-connect-sdk": "file:.yalc/@entaconsulting/rpaforms-connect-sdk"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
