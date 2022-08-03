@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { getTokenPopup } from "../../authentication/authentication";
+import { getAppSettings } from "../../configuration/configureSettings";
 import { ApiError, ForbiddenResultError, isProblemDetails } from "./apiError";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,9 +28,10 @@ const buildResponseError = (err: any) => {
 
 let httpRpaFormsClient: AxiosInstance;
 
-export const configureHttpRpaFormsClient = (serviceUrl?: string) => {
+export const configureHttpRpaFormsClient = () => {
+  const { serviceUrl } = getAppSettings();
   httpRpaFormsClient = axios.create({
-    baseURL: serviceUrl ?? "https://app.rpaforms.com/api",
+    baseURL: serviceUrl,
   });
   httpRpaFormsClient.interceptors.request.use(async (options) => {
     const authHeader = await getTokenPopup();

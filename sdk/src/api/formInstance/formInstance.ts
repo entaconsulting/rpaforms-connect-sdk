@@ -1,16 +1,25 @@
+import { getAppSettings } from "../../configuration/configureSettings";
 import getHttpRpaFormsClient from "../httpRpaFormsClient/httpRpaFormsClient";
-import { CreateFormInstanceResult, FormInstanceList } from "./types";
+import {
+  CreateFormInstanceResult,
+  FormInstanceListResult,
+  FormInstanceQueryOptions,
+} from "./types";
 
 export const create = async (
   formDefinitionId: string,
-  useExistingDraft?: boolean
+  expiresAt?: Date,
+  useExistingDraft?: boolean,
+  initialValues?: Record<string, unknown>
 ): Promise<CreateFormInstanceResult> => {
-  const endpoint = "ShareForm";
+  const endpoint = "FormInstance";
   const response = await getHttpRpaFormsClient().post<{
     sharedFormId: string;
     sharedFormToken: string;
   }>(endpoint, {
     formId: formDefinitionId,
+    initialValues,
+    expiresAt,
     useExistingDraft,
   });
   return {
@@ -20,26 +29,36 @@ export const create = async (
   };
 };
 
-export const listUserInstances = async () => {
-  const endpoint = "Response";
-  const response = await getHttpRpaFormsClient().get<FormInstanceList[]>(
-    endpoint
+export const listUserInstances = async (options: FormInstanceQueryOptions) => {
+  const { continuationToken = null, ...queryOptions } = options;
+  const endpoint = "FormInstance";
+  const headers = continuationToken
+    ? { "x-form-continuation": continuationToken }
+    : undefined;
+  const response = await getHttpRpaFormsClient().get<FormInstanceListResult>(
+    endpoint,
+    {
+      params: queryOptions,
+      headers,
+    }
   );
   return response.data;
 };
-export const getInstanceUri = async (id: string) => {
-  const endpoint = `ShareForm/GetSharedKey/${id}`;
+export const getInstanceUri = async (id: string, expiresAt?: Date) => {
+  const endpoint = `FormInstance/GetAccessToken/${id}`;
   const response = await getHttpRpaFormsClient().get<{
     sharedFormId: string;
     sharedFormToken: string;
-  }>(endpoint);
+  }>(endpoint, { params: { expiresAt } });
   return buildFormInstanceUri(response.data.sharedFormToken);
 };
 
 export const deleteInstance = async (id: string) => {
-  const endpoint = `Response/${id}`;
+  const endpoint = `FormInstance/${id}`;
   const response = await getHttpRpaFormsClient().delete(endpoint);
   return response.data;
 };
-const buildFormInstanceUri = (token: string) =>
-  `https://app.rpaforms.com/app/public/fill?token=${token}`;
+const buildFormInstanceUri = (token: string) => {
+  const { publicFillUrl } = getAppSettings();
+  return `${publicFillUrl}?token=${token}`;
+};

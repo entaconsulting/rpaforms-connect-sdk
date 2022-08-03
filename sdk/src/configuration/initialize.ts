@@ -1,11 +1,13 @@
 import { configureHttpRpaFormsClient } from "../api/httpRpaFormsClient/httpRpaFormsClient";
 import { selectAccount } from "../authentication/authentication";
 import configureAuth from "../authentication/configureAuth";
-import { RpaFormsSdkConfiguration } from "./types";
+import { configureSettings } from "./configureSettings";
+import { RpaFormsSdkConfigurationOptions } from "./types";
 
-const initialize = (options: RpaFormsSdkConfiguration) => {
-  configureAuth(options.authentication);
+const initialize = (options: RpaFormsSdkConfigurationOptions) => {
+  configureSettings(options);
+  configureAuth();
   selectAccount();
-  configureHttpRpaFormsClient(options.serviceUrl);
+  configureHttpRpaFormsClient();
 };
 export default initialize;

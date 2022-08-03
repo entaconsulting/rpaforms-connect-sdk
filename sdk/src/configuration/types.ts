@@ -1,4 +1,4 @@
-export type RpaFormsSdkConfiguration = {
+export type RpaFormsSdkConfigurationOptions = {
   authentication: {
     clientId: string;
     authority: string;
@@ -6,4 +6,12 @@ export type RpaFormsSdkConfiguration = {
     appIdURI?: string;
   };
   serviceUrl?: string;
+  publicFillUrl?: string;
+};
+export type RpaFormsSdkConfiguration = RpaFormsSdkConfigurationOptions & {
+  authentication: {
+    appIdURI: string;
+  };
+  serviceUrl: string;
+  publicFillUrl: string;
 };

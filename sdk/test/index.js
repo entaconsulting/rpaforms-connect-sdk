@@ -5,8 +5,11 @@ const rpaFormsConnectSdkConfig = {
     clientId: "18db5397-4d46-4300-9e36-6d8c5c28a818",
     authority: "https://login.microsoftonline.com/organizations",
     redirectUri: "http://localhost:5500/samples/html-static/blank.html",
+    appIdURI:
+      "api://rpaforms-dev.azurewebsites.net/d3acdcda-130c-419a-b9d6-6ca1e0d2ceef",
   },
-  serviceUrl: "https://app.rpaforms.com/api",
+  serviceUrl: "https://localhost:6001/api",
+  publicFillUrl: "https://rpaforms-dev.azurewebsites.net/public/fill",
 };
 
 //inicialización al finalizar la carga de la página
@@ -16,6 +19,7 @@ document.addEventListener(
     rpaFormsConnectSdk.initialize(rpaFormsConnectSdkConfig);
 
     signInButton.addEventListener("click", handleSignIn);
+    signOutButton.addEventListener("click", handleSignOut);
     rpaFormsConnectSdk.authentication.selectAccount();
     setAccountInfo();
 
@@ -26,11 +30,9 @@ document.addEventListener(
       )
     );
 
-    listFormInstancesButton.addEventListener(
-      "click",
-      rpaFormsConnectSdk.authentication.withAuthentication(
-        handleListFormInstances
-      )
+    loadMoreButton.hidden = true;
+    loadMoreButton.addEventListener("click", () =>
+      handleListFormInstances(true)
     );
   },
   false
@@ -38,14 +40,22 @@ document.addEventListener(
 
 //mapeo de elementos de la página
 const signInButton = document.getElementById("SignIn");
-const accountContainer = document.getElementById("AccountContainer");
+const signOutButton = document.getElementById("SignOut");
 const listFormDefinitionsButton = document.getElementById(
   "ListFormDefinitions"
 );
+const loadMoreButton = document.getElementById("ListFormInstancesMore");
+loadMoreButton.hidden = true;
+
 const listFormDefinitionsResult = document.getElementById(
   "ListFormDefinitionsResult"
 );
-const listFormInstancesButton = document.getElementById("ListFormInstances");
+let selectedFormDefinitionId = "";
+let currentContinuationToken = null;
+
+const listFormInstancesMessage = document.getElementById(
+  "ListFormInstancesMessage"
+);
 const listFormInstancesResult = document.getElementById(
   "ListFormInstancesResult"
 );
@@ -64,31 +74,25 @@ const handleListFormDefinitions = () => {
     });
 };
 
-//crear una nueva instancia de formulario para completar
-const handleCreateFormDefinition = () => {
-  const id = createFormDefinitionId.value;
-  if (!id) throw new Error("Form definition ID empty.");
-  createFormDefinitionResult.innerHTML = "Creating...";
-  rpaFormsConnectSdk.formInstance
-    .create(id)
-    .then((result) => {
-      createFormDefinitionResult.innerHTML = JSON.stringify(result);
-    })
-    .catch((e) => {
-      createFormDefinitionResult.innerHTML = e.message;
-    });
-};
-
 //listar las instancias de forms cargados por el usuario
-const handleListFormInstances = () => {
-  listFormInstancesResult.innerHTML = "Loading...";
+const handleListFormInstances = (addMore) => {
+  if (!selectedFormDefinitionId) {
+    listFormInstancesMessage.innerHTML = "Debe seleccionar un formDefinitionId";
+    return;
+  }
+  listFormInstancesMessage.innerHTML = "Loading...";
   rpaFormsConnectSdk.formInstance
-    .listUserInstances()
+    .listUserInstances({
+      formDefinitionId: selectedFormDefinitionId,
+      maxItemCount: 2,
+      continuationToken: currentContinuationToken,
+    })
     .then((result) => {
-      buildFormInstancesList(result);
+      buildFormInstancesList(result, addMore);
+      listFormInstancesMessage.innerHTML = "";
     })
     .catch((e) => {
-      listFormInstancesResult.innerHTML = e.message;
+      listFormInstancesMessage.innerHTML = e.message;
     });
 };
 
@@ -96,15 +100,22 @@ const handleListFormInstances = () => {
 const setAccountInfo = () => {
   if (rpaFormsConnectSdk.authentication.isAutenticated()) {
     signInButton.hidden = true;
+    signOutButton.hidden = false;
   } else {
     signInButton.hidden =
       !rpaFormsConnectSdk.authentication.needsExplicitLogin();
-    signInButton.innerHTML = "Sign In";
+    signOutButton.hidden = true;
   }
 };
 const handleSignIn = () => {
   if (rpaFormsConnectSdk.authentication.isAutenticated()) return;
   rpaFormsConnectSdk.authentication.signIn().then(() => {
+    setAccountInfo();
+  });
+};
+const handleSignOut = () => {
+  if (!rpaFormsConnectSdk.authentication.isAutenticated()) return;
+  rpaFormsConnectSdk.authentication.signOut().then(() => {
     setAccountInfo();
   });
 };
@@ -130,11 +141,13 @@ const openFormInstance = (id) => {
     });
 };
 
-const deleteFormInstance = (id) => {
+const deleteFormInstance = (id, tr) => {
   rpaFormsConnectSdk.formInstance
     .deleteInstance(id)
     .then(() => {
-      handleListFormInstances();
+      const rowIndex = tr.rowIndex;
+      const table = tr.parentElement.parentElement;
+      table.deleteRow(rowIndex);
     })
     .catch((e) => {
       alert(e ? e.message : "Error");
@@ -148,6 +161,9 @@ const buildFormDefinitionsList = (formDefinitions) => {
   formDefinitions.forEach((formDef) => {
     const tr = document.createElement("tr");
 
+    const tdFormId = document.createElement("td");
+    tdFormId.appendChild(document.createTextNode(formDef.formDefinitionId));
+
     const tdFormName = document.createElement("td");
     tdFormName.appendChild(document.createTextNode(formDef.name));
 
@@ -160,23 +176,56 @@ const buildFormDefinitionsList = (formDefinitions) => {
     btnCreate.className = "btn btn-primary";
     tdCreate.appendChild(btnCreate);
 
+    const tdList = document.createElement("td");
+    const btnList = document.createElement("button");
+    btnList.addEventListener("click", () => {
+      selectedFormDefinitionId = formDef.formDefinitionId;
+      currentContinuationToken = null;
+      return handleListFormInstances();
+    });
+    btnList.innerHTML = "Listar";
+    btnList.className = "btn btn-primary";
+    tdList.appendChild(btnList);
+
+    tr.appendChild(tdFormId);
     tr.appendChild(tdFormName);
     tr.appendChild(tdCreate);
+    tr.appendChild(tdList);
 
     tBody.appendChild(tr);
   });
   table.appendChild(tBody);
   listFormDefinitionsResult.replaceChildren(table);
 };
-const buildFormInstancesList = (formInstances) => {
-  const table = document.createElement("table");
-  table.className = "table";
-  const tBody = document.createElement("tbody");
-  formInstances.forEach((instance) => {
+const buildFormInstancesList = (formInstances, addMore) => {
+  let tBody;
+  if (addMore) {
+    let table = listFormInstancesResult.children[0];
+    if (!table) {
+      table = document.createElement("table");
+      table.className = "table";
+      listFormInstancesResult.replaceChildren(table);
+    }
+    tBody = table.children[0];
+    if (!tBody) {
+      tBody = document.createElement("tbody");
+      table.appendChild(tBody);
+    }
+  } else {
+    const table = document.createElement("table");
+    table.className = "table";
+    listFormInstancesResult.replaceChildren(table);
+    tBody = document.createElement("tbody");
+    table.appendChild(tBody);
+  }
+
+  formInstances.result.forEach((instance) => {
     const tr = document.createElement("tr");
 
-    const tdFormName = document.createElement("td");
-    tdFormName.appendChild(document.createTextNode(instance.name));
+    const tdFormTitle = document.createElement("td");
+    tdFormTitle.appendChild(
+      document.createTextNode(instance.title ?? `${instance.name} (Nuevo)`)
+    );
 
     const tdState = document.createElement("td");
     tdState.appendChild(document.createTextNode(instance.state));
@@ -199,13 +248,15 @@ const buildFormInstancesList = (formInstances) => {
 
     const tdDelete = document.createElement("td");
     const btnDelete = document.createElement("button");
-    btnDelete.addEventListener("click", () => deleteFormInstance(instance.id));
+    btnDelete.addEventListener("click", () =>
+      deleteFormInstance(instance.id, tr)
+    );
     btnDelete.innerHTML = "Borrar";
     btnDelete.className = "btn btn-secondary";
 
     tdOpen.appendChild(btnDelete);
 
-    tr.appendChild(tdFormName);
+    tr.appendChild(tdFormTitle);
     tr.appendChild(tdState);
     tr.appendChild(tdLastSaved);
     tr.appendChild(tdOpen);
@@ -214,6 +265,6 @@ const buildFormInstancesList = (formInstances) => {
     tBody.appendChild(tr);
   });
 
-  table.appendChild(tBody);
-  listFormInstancesResult.replaceChildren(table);
+  currentContinuationToken = formInstances.continuationToken;
+  loadMoreButton.hidden = !currentContinuationToken;
 };

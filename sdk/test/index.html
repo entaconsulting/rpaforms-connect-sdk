@@ -27,15 +27,19 @@
   </head>
   <body>
     <button type="button" id="SignIn" class="btn btn-link">Sign In</button>
+    <button type="button" id="SignOut" class="btn btn-link">Sign Out</button>
     <div id="AccountContainer"></div>
-    <button type="button" id="ListFormDefinitions" class="btn btn-link">
-      Iniciar formulario
+    <h6>Formularios Disponibles</h6>
+    <button type="button" id="ListFormDefinitions" class="btn btn-primary">
+      Cargar
     </button>
     <div id="ListFormDefinitionsResult" style="width: 500px"></div>
-    <button type="button" id="ListFormInstances" class="btn btn-link">
-      Ver mis formularios
-    </button>
+    <h6>Formularios Cargados</h6>
+    <div id="ListFormInstancesMessage"></div>
     <div id="ListFormInstancesResult"></div>
+    <button type="button" id="ListFormInstancesMore" class="btn btn-link">
+      Cargar mas...
+    </button>
     <script src="./index.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
