@@ -4,16 +4,14 @@ import commonjs from "@rollup/plugin-commonjs";
 import del from "rollup-plugin-delete";
 import serve from "rollup-plugin-serve";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
-import packageJson from "./package.json";
 
 export default [
   {
-    input: "src/rpaforms-connect-sdk.ts",
+    input: "src/test/index.ts",
     output: [
       {
-        file: packageJson.main,
+        file: "test/index.js",
         format: "umd",
-        name: "rpaFormsConnectSdk",
         sourcemap: true,
         globals: { "@azure/msal-browser": "msal" },
       },
@@ -24,9 +22,9 @@ export default [
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
       // Delete dist folder with each new build.
-      del({ targets: "dist/*" }),
+      del({ targets: "test/index.js" }),
       serve({
-        contentBase: ["", "dist", "test"],
+        contentBase: ["test"],
         host: "localhost",
         port: 5500,
       }),

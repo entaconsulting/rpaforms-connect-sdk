@@ -14,8 +14,8 @@ export type FormInstanceInfo = {
 };
 
 export type FormInstanceListResult = {
-  items: FormInstanceInfo[];
-  continuationToken?: string | null;
+  result: FormInstanceInfo[];
+  continuationToken: string | null;
 };
 
 type FormInstanceQueryOptionsFilter = {
@@ -29,7 +29,7 @@ type FormInstanceQueryOptionsFilter = {
 };
 export type FormInstanceQueryOptions = {
   formDefinitionId: string;
-  filter: FormInstanceQueryOptionsFilter;
+  filter?: FormInstanceQueryOptionsFilter;
   orderByField?: string;
   orderByDirection?: string;
   maxItemCount?: number;
