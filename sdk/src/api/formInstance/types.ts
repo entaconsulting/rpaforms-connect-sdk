@@ -18,7 +18,7 @@ export type FormInstanceListResult = {
   continuationToken: string | null;
 };
 
-type FormInstanceQueryOptionsFilter = {
+export type FormInstanceQueryOptionsFilter = {
   createdAtFrom?: Date;
   createdAtTo?: Date;
   lastSavedFrom?: Date;
