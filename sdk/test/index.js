@@ -4699,14 +4699,16 @@
         loadMoreButton.hidden = !currentContinuationToken;
     };
     document.addEventListener("DOMContentLoaded", function () {
-        initialize(rpaFormsConnectSdkConfig);
-        signInButton.addEventListener("click", handleSignIn);
-        signOutButton.addEventListener("click", handleSignOut);
-        selectAccount();
-        setAccountInfo();
-        listFormDefinitionsButton.addEventListener("click", withAuthentication(handleListFormDefinitions));
-        loadMoreButton.hidden = true;
-        loadMoreButton.addEventListener("click", () => handleListFormInstances(true));
+        return __awaiter(this, void 0, void 0, function* () {
+            yield initialize(rpaFormsConnectSdkConfig);
+            signInButton.addEventListener("click", handleSignIn);
+            signOutButton.addEventListener("click", handleSignOut);
+            selectAccount();
+            setAccountInfo();
+            listFormDefinitionsButton.addEventListener("click", withAuthentication(handleListFormDefinitions));
+            loadMoreButton.hidden = true;
+            loadMoreButton.addEventListener("click", () => handleListFormInstances(true));
+        });
     }, false);
 
 }));

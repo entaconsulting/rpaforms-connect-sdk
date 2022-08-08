@@ -265,8 +265,8 @@ const buildFormInstancesList = (
 
 document.addEventListener(
   "DOMContentLoaded",
-  function () {
-    initialize(rpaFormsConnectSdkConfig);
+  async function () {
+    await initialize(rpaFormsConnectSdkConfig);
 
     signInButton.addEventListener("click", handleSignIn);
     signOutButton.addEventListener("click", handleSignOut);
