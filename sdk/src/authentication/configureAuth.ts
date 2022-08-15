@@ -18,12 +18,16 @@ const configureAuth = () => {
       redirectUri: options.redirectUri,
     },
   };
-  if (!PublicClientApplication) {
-    throw new Error(
-      "Unable to find MSAL library. Please verify it's loaded before calling the sdk."
+
+  try {
+    myMSALObj = new PublicClientApplication(authConfig);
+  } catch (e) {
+    console.error(
+      "Error initializing MSAL. Please verify it's loaded before calling the sdk.",
+      e
     );
+    throw new Error("Unable to configure authentication.");
   }
-  myMSALObj = new PublicClientApplication(authConfig);
   let tokenScope = `${options.appIdURI}/access_as_user`;
   if (!tokenScope.endsWith("")) {
     tokenScope = tokenScope + "/access_as_user";
