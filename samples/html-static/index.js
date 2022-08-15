@@ -11,10 +11,11 @@ const rpaFormsConnectSdkConfig = {
 //inicialización al finalizar la carga de la página
 document.addEventListener(
   "DOMContentLoaded",
-  function () {
+  async function () {
     rpaFormsConnectSdk.initialize(rpaFormsConnectSdkConfig);
 
     signInButton.addEventListener("click", handleSignIn);
+    signOutButton.addEventListener("click", handleSignOut);
     rpaFormsConnectSdk.authentication.selectAccount();
     setAccountInfo();
   },
@@ -42,6 +43,12 @@ const setAccountInfo = () => {
 const handleSignIn = () => {
   if (rpaFormsConnectSdk.authentication.isAutenticated()) return;
   rpaFormsConnectSdk.authentication.signIn().then(() => {
+    setAccountInfo();
+  });
+};
+const handleSignOut = () => {
+  if (!rpaFormsConnectSdk.authentication.isAutenticated()) return;
+  rpaFormsConnectSdk.authentication.signOut().then(() => {
     setAccountInfo();
   });
 };

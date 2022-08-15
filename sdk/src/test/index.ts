@@ -15,7 +15,7 @@ const rpaFormsConnectSdkConfig = {
     appIdURI:
       "api://rpaforms-dev.azurewebsites.net/d3acdcda-130c-419a-b9d6-6ca1e0d2ceef",
   },
-  serviceUrl: "https://localhost:6001/api",
+  serviceUrl: "https://rpaforms-dev.azurewebsites.net/api",
   publicFillUrl: "https://rpaforms-dev.azurewebsites.net/public/fill",
 };
 
