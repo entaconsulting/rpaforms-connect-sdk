@@ -2,12 +2,17 @@ import { configureHttpRpaFormsClient } from "../api/httpRpaFormsClient/httpRpaFo
 import { selectAccount } from "../authentication/authentication";
 import configureAuth from "../authentication/configureAuth";
 import { configureSettings } from "./configureSettings";
-import { RpaFormsSdkConfigurationOptions } from "./types";
+import {
+  isDelegatedAuthentictionOptions,
+  RpaFormsSdkConfigurationOptions,
+} from "./types";
 
 const initialize = (options: RpaFormsSdkConfigurationOptions) => {
   configureSettings(options);
   configureAuth();
-  selectAccount();
+  if (!isDelegatedAuthentictionOptions(options.authentication)) {
+    selectAccount();
+  }
   configureHttpRpaFormsClient();
 };
 export default initialize;

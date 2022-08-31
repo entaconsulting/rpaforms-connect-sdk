@@ -34,10 +34,10 @@ export const configureHttpRpaFormsClient = () => {
     baseURL: serviceUrl,
   });
   httpRpaFormsClient.interceptors.request.use(async (options) => {
-    const authHeader = await getTokenPopup();
+    const accessToken = await getTokenPopup();
     options.headers = {
       ...options.headers,
-      authorization: "Bearer " + authHeader?.accessToken,
+      authorization: "Bearer " + accessToken,
     };
     return options;
   });

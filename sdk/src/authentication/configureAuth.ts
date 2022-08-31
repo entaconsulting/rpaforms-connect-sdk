@@ -1,5 +1,6 @@
 import { Configuration, PublicClientApplication } from "@azure/msal-browser";
 import { getAppSettings } from "../configuration/configureSettings";
+import { isDelegatedAuthentictionOptions } from "../configuration/types";
 import { msalConfig } from "./msalConfig";
 
 // common configuration parameters are located at msalConfig.js
@@ -7,9 +8,16 @@ export let myMSALObj: PublicClientApplication;
 export const tokenRequest = {
   scopes: [] as string[],
 };
+export let authMode: "sdk" | "delegated" | undefined = undefined;
 
 const configureAuth = () => {
   const { authentication: options } = getAppSettings();
+
+  if (isDelegatedAuthentictionOptions(options)) {
+    authMode = "delegated";
+    return;
+  }
+  authMode = "sdk";
   const authConfig: Configuration = {
     ...msalConfig,
     auth: {

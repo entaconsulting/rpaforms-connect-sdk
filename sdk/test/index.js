@@ -53,23 +53,6 @@
         });
     }
 
-    class AccountNotFoundError extends Error {
-        get isAccountNotFound() {
-            return true;
-        }
-    }
-
-    let settings;
-    const configureSettings = (options) => {
-        var _a, _b, _c;
-        settings = Object.assign(Object.assign({}, options), { authentication: Object.assign(Object.assign({}, options.authentication), { appIdURI: (_a = options.authentication.appIdURI) !== null && _a !== void 0 ? _a : "api://rpaforms.com/b782e2e8-9682-4898-b211-a304714f4f6b" }), serviceUrl: (_b = options.serviceUrl) !== null && _b !== void 0 ? _b : "https://app.rpaforms.com/api", publicFillUrl: (_c = options.publicFillUrl) !== null && _c !== void 0 ? _c : "https://app.rpaforms.com/public/fill" });
-    };
-    const getAppSettings = () => {
-        if (!settings)
-            throw new Error("app settings not configured");
-        return settings;
-    };
-
     const msalConfig = {
         cache: {
             cacheLocation: "sessionStorage",
@@ -105,87 +88,108 @@
         // },
     };
 
+    const isDelegatedAuthentictionOptions = (options) => {
+        return "getToken" in options;
+    };
+
+    let settings;
+    const configureSettings = (options) => {
+        var _a, _b, _c;
+        const authOptions = isDelegatedAuthentictionOptions(options.authentication)
+            ? options.authentication
+            : Object.assign(Object.assign({}, options.authentication), { appIdURI: (_a = options.authentication.appIdURI) !== null && _a !== void 0 ? _a : "api://rpaforms.com/b782e2e8-9682-4898-b211-a304714f4f6b" });
+        settings = Object.assign(Object.assign({}, options), { authentication: authOptions, serviceUrl: (_b = options.serviceUrl) !== null && _b !== void 0 ? _b : "https://app.rpaforms.com/api", publicFillUrl: (_c = options.publicFillUrl) !== null && _c !== void 0 ? _c : "https://app.rpaforms.com/public/fill" });
+    };
+    const getAppSettings = () => {
+        if (!settings)
+            throw new Error("app settings not configured");
+        return settings;
+    };
+    const getAuthSettings = () => {
+        if (!settings)
+            throw new Error("app settings not configured");
+        return settings.authentication;
+    };
+
+    class AccountNotFoundError extends Error {
+        get isAccountNotFound() {
+            return true;
+        }
+    }
+
     // common configuration parameters are located at msalConfig.js
-    let myMSALObj;
-    const tokenRequest = {
+    let myMSALObj$1;
+    const tokenRequest$1 = {
         scopes: [],
     };
-    const configureAuth = () => {
+    let authMode = undefined;
+    const configureAuth$1 = () => {
         const { authentication: options } = getAppSettings();
+        if (isDelegatedAuthentictionOptions(options)) {
+            authMode = "delegated";
+            return;
+        }
+        authMode = "sdk";
         const authConfig = Object.assign(Object.assign({}, msalConfig), { auth: {
                 clientId: options.clientId,
                 authority: options.authority,
                 redirectUri: options.redirectUri,
             } });
-        myMSALObj = new msalBrowser.PublicClientApplication(authConfig);
+        try {
+            myMSALObj$1 = new msalBrowser.PublicClientApplication(authConfig);
+        }
+        catch (e) {
+            console.error("Error initializing MSAL. Please verify it's loaded before calling the sdk.", e);
+            throw new Error("Unable to configure authentication.");
+        }
         let tokenScope = `${options.appIdURI}/access_as_user`;
         if (!tokenScope.endsWith("")) {
             tokenScope = tokenScope + "/access_as_user";
         }
-        tokenRequest.scopes.push(tokenScope);
+        tokenRequest$1.scopes.push(tokenScope);
     };
 
     // common configuration parameters are located at msalConfig.js
-    let username = "";
-    let forceLogin = false;
+    let username$1 = "";
     const selectAccount = () => {
-        const currentAccounts = myMSALObj.getAllAccounts();
+        if (authMode === "delegated") {
+            throw new Error("Cannot call selectAccount when authentication method is delegated.");
+        }
+        const currentAccounts = myMSALObj$1.getAllAccounts();
         if (currentAccounts.length === 0) {
-            username = "";
+            username$1 = "";
             return;
         }
         else if (currentAccounts.length > 1) {
             // Add choose account code here
-            username = "";
+            username$1 = "";
             console.warn("Multiple accounts detected.");
         }
         else if (currentAccounts.length === 1) {
-            username = currentAccounts[0].username;
+            username$1 = currentAccounts[0].username;
         }
     };
-    const isAutenticated = () => !!username;
-    const needsExplicitLogin = () => forceLogin;
-    const signIn = () => __awaiter(void 0, void 0, void 0, function* () {
-        var _a;
-        if (!myMSALObj)
-            throw new Error("Authorization not configured. Please call configureAuth before signIn.");
-        const request = forceLogin
-            ? Object.assign(Object.assign({}, tokenRequest), { prompt: "login" }) : tokenRequest;
-        try {
-            const result = yield myMSALObj.loginPopup(request);
-            if (!result.account)
-                throw new Error("No account info after login"); //this shouldn't happen
-            forceLogin = false;
-            username = (_a = result.account) === null || _a === void 0 ? void 0 : _a.username;
-        }
-        catch (e) {
-            forceLogin = true;
-            throw e;
-        }
-    });
-    const signOut = () => __awaiter(void 0, void 0, void 0, function* () {
-        const logoutRequest = {
-            account: myMSALObj.getAccountByUsername(username),
-        };
-        yield myMSALObj.logoutPopup(logoutRequest);
-        username = "";
-        forceLogin = false;
-    });
     const getTokenPopup = () => __awaiter(void 0, void 0, void 0, function* () {
+        var _b, _c;
+        if (authMode === "delegated") {
+            const authSettings = getAuthSettings();
+            const token = yield authSettings.getToken();
+            return token;
+        }
         /**
          * See here for more info on account retrieval:
          * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
          */
-        if (!username) {
+        if (!username$1) {
             throw new Error("Not autenticated.");
         }
-        const account = myMSALObj.getAccountByUsername(username);
+        const account = myMSALObj$1.getAccountByUsername(username$1);
         if (!account) {
             throw new AccountNotFoundError("Account not found.");
         }
-        const request = Object.assign({ account }, tokenRequest);
+        const request = Object.assign({ account }, tokenRequest$1);
         try {
-            return yield myMSALObj.acquireTokenSilent(request);
+            return (_b = (yield myMSALObj$1.acquireTokenSilent(request))) === null || _b === void 0 ? void 0 : _b.accessToken;
         }
         catch (e) {
             console.warn("silent token acquisition fails. acquiring token using popup");
@@ -196,20 +200,12 @@
         }
         // fallback to interaction when silent call fails
         try {
-            return yield myMSALObj.acquireTokenPopup(request);
+            return (_c = (yield myMSALObj$1.acquireTokenPopup(request))) === null || _c === void 0 ? void 0 : _c.accessToken;
         }
         catch (error) {
             console.error(error);
         }
     });
-    const withAuthentication = (func) => {
-        return () => __awaiter(void 0, void 0, void 0, function* () {
-            if (!isAutenticated()) {
-                yield signIn();
-            }
-            yield func();
-        });
-    };
 
     function getDefaultExportFromCjs (x) {
     	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
@@ -4426,8 +4422,8 @@
             baseURL: serviceUrl,
         });
         httpRpaFormsClient.interceptors.request.use((options) => __awaiter(void 0, void 0, void 0, function* () {
-            const authHeader = yield getTokenPopup();
-            options.headers = Object.assign(Object.assign({}, options.headers), { authorization: "Bearer " + (authHeader === null || authHeader === void 0 ? void 0 : authHeader.accessToken) });
+            const accessToken = yield getTokenPopup();
+            options.headers = Object.assign(Object.assign({}, options.headers), { authorization: "Bearer " + accessToken });
             return options;
         }));
         httpRpaFormsClient.interceptors.response.use(undefined, (error) => {
@@ -4492,24 +4488,89 @@
 
     const initialize = (options) => {
         configureSettings(options);
-        configureAuth();
-        selectAccount();
+        configureAuth$1();
+        if (!isDelegatedAuthentictionOptions(options.authentication)) {
+            selectAccount();
+        }
         configureHttpRpaFormsClient();
     };
 
+    let myMSALObj;
+    const tokenRequest = {
+        scopes: [],
+    };
     const rpaFormsConnectSdkConfig = {
         authentication: {
+            getToken: () => __awaiter(void 0, void 0, void 0, function* () {
+                var _a, _b;
+                const account = myMSALObj.getAccountByUsername(username);
+                if (!account) {
+                    throw new Error("Account not found.");
+                }
+                const request = Object.assign({ account }, tokenRequest);
+                try {
+                    return (_a = (yield myMSALObj.acquireTokenSilent(request))) === null || _a === void 0 ? void 0 : _a.accessToken;
+                }
+                catch (e) {
+                    console.warn("silent token acquisition fails. acquiring token using popup");
+                    if (!(e instanceof msalBrowser.InteractionRequiredAuthError)) {
+                        console.warn(e);
+                        return;
+                    }
+                }
+                // fallback to interaction when silent call fails
+                try {
+                    return (_b = (yield myMSALObj.acquireTokenPopup(request))) === null || _b === void 0 ? void 0 : _b.accessToken;
+                }
+                catch (error) {
+                    console.error(error);
+                }
+            }),
+        },
+        serviceUrl: "https://rpaforms-dev.azurewebsites.net/api",
+        publicFillUrl: "https://rpaforms-dev.azurewebsites.net/public/fill",
+    };
+    let username = "";
+    const configureAuth = () => {
+        const options = {
             clientId: "18db5397-4d46-4300-9e36-6d8c5c28a818",
             authority: "https://login.microsoftonline.com/organizations",
             redirectUri: "http://localhost:5500/samples/html-static/blank.html",
             appIdURI: "api://rpaforms-dev.azurewebsites.net/d3acdcda-130c-419a-b9d6-6ca1e0d2ceef",
-        },
-        serviceUrl: "https://localhost:6001/api",
-        publicFillUrl: "https://rpaforms-dev.azurewebsites.net/public/fill",
+        };
+        const authConfig = Object.assign(Object.assign({}, msalConfig), { auth: {
+                clientId: options.clientId,
+                authority: options.authority,
+                redirectUri: options.redirectUri,
+            } });
+        try {
+            myMSALObj = new msalBrowser.PublicClientApplication(authConfig);
+        }
+        catch (e) {
+            console.error("Error initializing MSAL. Please verify it's loaded before calling the sdk.", e);
+            throw new Error("Unable to configure authentication.");
+        }
+        let tokenScope = `${options.appIdURI}/access_as_user`;
+        if (!tokenScope.endsWith("")) {
+            tokenScope = tokenScope + "/access_as_user";
+        }
+        tokenRequest.scopes.push(tokenScope);
+        const currentAccounts = myMSALObj.getAllAccounts();
+        if (currentAccounts.length === 0) {
+            username = "";
+            return;
+        }
+        else if (currentAccounts.length > 1) {
+            // Add choose account code here
+            username = "";
+            console.warn("Multiple accounts detected.");
+        }
+        else if (currentAccounts.length === 1) {
+            username = currentAccounts[0].username;
+        }
     };
     //mapeo de elementos de la página
     const signInButton = document.getElementById("SignIn");
-    const signOutButton = document.getElementById("SignOut");
     const listFormDefinitionsButton = document.getElementById("ListFormDefinitions");
     const loadMoreButton = document.getElementById("ListFormInstancesMore");
     loadMoreButton.hidden = true;
@@ -4551,29 +4612,23 @@
     };
     //autenticación
     const setAccountInfo = () => {
-        if (isAutenticated()) {
+        if (!username) {
             signInButton.hidden = true;
-            signOutButton.hidden = false;
         }
         else {
-            signInButton.hidden = !needsExplicitLogin();
-            signOutButton.hidden = true;
+            signInButton.hidden = true;
         }
     };
-    const handleSignIn = () => {
-        if (isAutenticated())
+    const handleSignIn = () => __awaiter(void 0, void 0, void 0, function* () {
+        var _c;
+        if (username)
             return;
-        signIn().then(() => {
-            setAccountInfo();
-        });
-    };
-    const handleSignOut = () => {
-        if (!isAutenticated())
-            return;
-        signOut().then(() => {
-            setAccountInfo();
-        });
-    };
+        const request = Object.assign(Object.assign({}, tokenRequest), { prompt: "login" });
+        const result = yield myMSALObj.loginPopup(request);
+        if (!result.account)
+            throw new Error("No account info after login"); //this shouldn't happen
+        username = (_c = result.account) === null || _c === void 0 ? void 0 : _c.username;
+    });
     const createFormInstance = (id) => {
         create(id)
             .then((result) => {
@@ -4699,16 +4754,13 @@
         loadMoreButton.hidden = !currentContinuationToken;
     };
     document.addEventListener("DOMContentLoaded", function () {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield initialize(rpaFormsConnectSdkConfig);
-            signInButton.addEventListener("click", handleSignIn);
-            signOutButton.addEventListener("click", handleSignOut);
-            selectAccount();
-            setAccountInfo();
-            listFormDefinitionsButton.addEventListener("click", withAuthentication(handleListFormDefinitions));
-            loadMoreButton.hidden = true;
-            loadMoreButton.addEventListener("click", () => handleListFormInstances(true));
-        });
+        configureAuth();
+        initialize(rpaFormsConnectSdkConfig);
+        signInButton.addEventListener("click", handleSignIn);
+        setAccountInfo();
+        listFormDefinitionsButton.addEventListener("click", handleListFormDefinitions);
+        loadMoreButton.hidden = true;
+        loadMoreButton.addEventListener("click", () => handleListFormInstances(true));
     }, false);
 
 }));
