@@ -26,6 +26,15 @@ export class ForbiddenResultError extends Error {
   }
 }
 
+export class UnauthorizedResultError extends Error {
+  constructor() {
+    super("Unauthorized");
+  }
+
+  public get isUnauthorizedResult(): boolean {
+    return true;
+  }
+}
 export function isApiError(error: Error): error is ApiError {
   return "problemDetails" in error;
 }
