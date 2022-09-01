@@ -22,9 +22,6 @@
     "start": "rollup -c rollup.config.development.js -w",
     "doc": "typedoc"
   },
-  "peerDependencies": {
-    "@azure/msal-browser": "^2.23.0"
-  },
   "devDependencies": {
     "@azure/msal-browser": "^2.23.0",
     "@rollup/plugin-commonjs": "^22.0.0",
