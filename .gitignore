@@ -2,4 +2,6 @@
 /**/build/
 /**/lib/
 /**/dist/
-/sdk/test
+/sdk/test/index.js
+/sdk/test/index.js.map
+/sdk/test/types

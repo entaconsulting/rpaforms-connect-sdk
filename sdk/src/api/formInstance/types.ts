@@ -10,6 +10,7 @@ export type FormInstanceInfo = {
   title: string;
   lastSaved: string;
   createdAt: string;
+  createdBy: string;
   state: string;
 };
 
