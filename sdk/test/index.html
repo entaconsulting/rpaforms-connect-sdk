@@ -33,7 +33,16 @@
       Cargar
     </button>
     <div id="ListFormDefinitionsResult" style="width: 500px"></div>
-    <h6>Formularios Cargados</h6>
+    <h6>Instancias de Formularios</h6>
+    <div id="InstanciasToolbar">
+      <label>Last saved From:</label>
+      <input type="datetime" id="FilterLastSavedFrom" />
+      <label>To:</label>
+      <input type="datetime" id="FilterLastSavedTo" />
+      <label>State:</label>
+      <input type="text" id="FiltrState" />
+      <button type="button" id="RefreshInstances">Refresh</button>
+    </div>
     <div id="ListFormInstancesMessage"></div>
     <div id="ListFormInstancesResult"></div>
     <button type="button" id="ListFormInstancesMore" class="btn btn-link">
@@ -46,4 +55,13 @@
       crossorigin="anonymous"
     ></script>
   </body>
+  <style>
+    #InstanciasToolbar > * {
+      float: left;
+      margin-right: 20px;
+    }
+    #InstanciasToolbar > input {
+      width: 100px;
+    }
+  </style>
 </html>

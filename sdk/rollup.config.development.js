@@ -12,7 +12,7 @@ export default [
       {
         file: "test/index.js",
         format: "umd",
-        sourcemap: true,
+        sourcemap: false,
         globals: { "@azure/msal-browser": "msal" },
       },
     ],
