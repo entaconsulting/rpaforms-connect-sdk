@@ -3,6 +3,7 @@ import {
   FormDefinition,
   formInstance,
   FormInstanceListResult,
+  FormInstanceQueryOptionsFilter,
   initialize,
   userProfile,
 } from "../rpaforms-connect-sdk";
@@ -15,7 +16,8 @@ const rpaFormsConnectSdkConfig = {
     appIdURI:
       "api://rpaforms-dev.azurewebsites.net/d3acdcda-130c-419a-b9d6-6ca1e0d2ceef",
   },
-  serviceUrl: "https://rpaforms-dev.azurewebsites.net/api",
+  // serviceUrl: "https://rpaforms-dev.azurewebsites.net/api",
+  serviceUrl: "https://localhost:6001/api",
   publicFillUrl: "https://rpaforms-dev.azurewebsites.net/public/fill",
 };
 
@@ -29,6 +31,19 @@ const loadMoreButton = document.getElementById(
   "ListFormInstancesMore"
 ) as HTMLButtonElement;
 loadMoreButton.hidden = true;
+
+const filterLastSavedFromInput = document.getElementById(
+  "FilterLastSavedFrom"
+) as HTMLInputElement;
+const filterLastSavedToInput = document.getElementById(
+  "FilterLastSavedTo"
+) as HTMLInputElement;
+const filterStateInput = document.getElementById(
+  "FiltrState"
+) as HTMLInputElement;
+const refreshInstancesButton = document.getElementById(
+  "RefreshInstances"
+) as HTMLButtonElement;
 
 const listFormDefinitionsResult = document.getElementById(
   "ListFormDefinitionsResult"
@@ -64,10 +79,23 @@ const handleListFormInstances = (addMore: boolean) => {
     return;
   }
   listFormInstancesMessage.innerHTML = "Loading...";
+  const filter: FormInstanceQueryOptionsFilter = {};
+
+  if (filterLastSavedFromInput.value) {
+    filter.lastSavedFrom = new Date(filterLastSavedFromInput.value);
+  }
+  if (filterLastSavedToInput.value) {
+    filter.lastSavedTo = new Date(filterLastSavedToInput.value);
+  }
+  if (filterStateInput.value) {
+    filter.state = filterStateInput.value;
+  }
+
   formInstance
     .listUserInstances({
       formDefinitionId: selectedFormDefinitionId,
       maxItemCount: 2,
+      filter,
       continuationToken: currentContinuationToken,
     })
     .then((result) => {
@@ -232,6 +260,10 @@ const buildFormInstancesList = (
           : "---"
       )
     );
+    const tdCreatedBy = document.createElement("td");
+    tdCreatedBy.appendChild(
+      document.createTextNode(instance.createdBy ?? "---")
+    );
 
     const tdOpen = document.createElement("td");
     const btnOpen = document.createElement("button");
@@ -253,6 +285,7 @@ const buildFormInstancesList = (
     tr.appendChild(tdFormTitle);
     tr.appendChild(tdState);
     tr.appendChild(tdLastSaved);
+    tr.appendChild(tdCreatedBy);
     tr.appendChild(tdOpen);
     tr.appendChild(tdDelete);
 
@@ -278,6 +311,9 @@ document.addEventListener(
       authentication.withAuthentication(handleListFormDefinitions)
     );
 
+    refreshInstancesButton.addEventListener("click", () =>
+      handleListFormInstances(false)
+    );
     loadMoreButton.hidden = true;
     loadMoreButton.addEventListener("click", () =>
       handleListFormInstances(true)
