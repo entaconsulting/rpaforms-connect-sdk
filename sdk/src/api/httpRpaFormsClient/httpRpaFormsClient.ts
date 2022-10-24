@@ -41,6 +41,7 @@ const serializeQueryString = (params: any, prefix?: string): string => {
     const value = params[key];
     if (typeof value !== "object" || value instanceof Date) {
       const stringValue = JSON.stringify(value);
+      if (stringValue == undefined || stringValue == null) continue;
       const paramKey = prefix ? `${prefix}.${key}` : key;
       values.push(
         `${paramKey}=${
