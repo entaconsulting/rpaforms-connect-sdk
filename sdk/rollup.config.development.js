@@ -12,7 +12,7 @@ export default [
       {
         file: "test/index.js",
         format: "umd",
-        sourcemap: false,
+        sourcemap: true,
         globals: { "@azure/msal-browser": "msal" },
       },
     ],
@@ -24,7 +24,7 @@ export default [
       // Delete dist folder with each new build.
       del({ targets: "test/index.js" }),
       serve({
-        contentBase: ["test"],
+        contentBase: ["test", "."],
         host: "localhost",
         port: 5500,
       }),
