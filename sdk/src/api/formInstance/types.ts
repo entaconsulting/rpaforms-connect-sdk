@@ -49,7 +49,7 @@ export type StageInfo = {
 };
 
 export type StageListResult = {
-  result: FormInstanceInfo[];
+  result: StageInfo[];
   continuationToken: string | null;
 };
 
