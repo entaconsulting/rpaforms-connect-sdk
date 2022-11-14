@@ -4,6 +4,8 @@ import {
   CreateFormInstanceResult,
   FormInstanceListResult,
   FormInstanceQueryOptions,
+  StageListResult,
+  StageQueryOptions,
 } from "./types";
 
 export const create = async (
@@ -58,6 +60,23 @@ export const deleteInstance = async (id: string) => {
   const response = await getHttpRpaFormsClient().delete(endpoint);
   return response.data;
 };
+
+export const listUserStages = async (options: StageQueryOptions) => {
+  const { continuationToken = null, ...queryOptions } = options;
+  const endpoint = "FormInstance/Stage";
+  const headers = continuationToken
+    ? { "x-form-continuation": continuationToken }
+    : undefined;
+  const response = await getHttpRpaFormsClient().get<StageListResult>(
+    endpoint,
+    {
+      params: queryOptions,
+      headers,
+    }
+  );
+  return response.data;
+};
+
 const buildFormInstanceUri = (token: string) => {
   const { publicFillUrl } = getAppSettings();
   return `${publicFillUrl}?token=${token}`;
