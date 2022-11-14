@@ -39,6 +39,7 @@ export type FormInstanceQueryOptions = {
 };
 
 export type StageInfo = {
+  stageInstanceId: string;
   formInstanceId: string;
   formDefinitionName: string;
   formTitle: string;
