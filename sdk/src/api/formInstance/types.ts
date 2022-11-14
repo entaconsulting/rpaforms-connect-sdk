@@ -28,9 +28,46 @@ export type FormInstanceQueryOptionsFilter = {
   title?: string;
   tags?: Record<string, string>;
 };
+
 export type FormInstanceQueryOptions = {
   formDefinitionId: string;
   filter?: FormInstanceQueryOptionsFilter;
+  orderByField?: string;
+  orderByDirection?: string;
+  maxItemCount?: number;
+  continuationToken?: string | null;
+};
+
+export type StageInfo = {
+  formInstanceId: string;
+  formDefinitionName: string;
+  formTitle: string;
+  stageName: string;
+  stageCreatedAt: string;
+  stageLastSaved: string;
+  stageState: string;
+};
+
+export type StageListResult = {
+  result: FormInstanceInfo[];
+  continuationToken: string | null;
+};
+
+export type StageQueryOptionsFilter = {
+  stageName?: string;
+  createdAtFrom?: Date;
+  createdAtTo?: Date;
+  lastSavedFrom?: Date;
+  lastSavedTo?: Date;
+  state?: string;
+  formDefinitionId?: string;
+  title?: string;
+  tags?: Record<string, string>;
+};
+
+export type StageQueryOptions = {
+  formDefinitionId?: string;
+  filter?: StageQueryOptionsFilter;
   orderByField?: string;
   orderByDirection?: string;
   maxItemCount?: number;
