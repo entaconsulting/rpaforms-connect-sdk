@@ -62,7 +62,7 @@ export const getStageInstanceUri = async (
   const parts = stageInstanceId.split("_");
   if (parts.length !== 2) throw new Error("invalid stageInstanceId format");
 
-  const endpoint = `FormInstance/${parts[0]}/stage/${parts[1]}`;
+  const endpoint = `FormInstance/${parts[0]}/stage/${parts[1]}/AccessToken`;
   const response = await getHttpRpaFormsClient().get<{
     stageInstanceId: string;
     sharedFormToken: string;
