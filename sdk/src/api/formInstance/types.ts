@@ -63,7 +63,6 @@ export type StageQueryOptionsFilter = {
   state?: string;
   formDefinitionId?: string;
   title?: string;
-  tags?: Record<string, string>;
 };
 
 export type StageQueryOptions = {
