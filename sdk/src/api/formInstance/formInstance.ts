@@ -47,9 +47,24 @@ export const listUserInstances = async (options: FormInstanceQueryOptions) => {
   return response.data;
 };
 export const getInstanceUri = async (id: string, expiresAt?: Date) => {
-  const endpoint = `FormInstance/GetAccessToken/${id}`;
+  const endpoint = `FormInstance/${id}/GetAccessToken`;
   const response = await getHttpRpaFormsClient().get<{
     sharedFormId: string;
+    sharedFormToken: string;
+  }>(endpoint, { params: { expiresAt } });
+  return buildFormInstanceUri(response.data.sharedFormToken);
+};
+
+export const getStageInstanceUri = async (
+  stageInstanceId: string,
+  expiresAt?: Date
+) => {
+  const parts = stageInstanceId.split("_");
+  if (parts.length !== 2) throw new Error("invalid stageInstanceId format");
+
+  const endpoint = `FormInstance/${parts[0]}/stage/${parts[1]}/AccessToken`;
+  const response = await getHttpRpaFormsClient().get<{
+    stageInstanceId: string;
     sharedFormToken: string;
   }>(endpoint, { params: { expiresAt } });
   return buildFormInstanceUri(response.data.sharedFormToken);
