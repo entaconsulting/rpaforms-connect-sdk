@@ -22,8 +22,11 @@
     "start": "rollup -c rollup.config.development.js -w",
     "doc": "typedoc"
   },
+  "peerDependencies": {
+    "@entaconsulting/form": "^1.7.0",
+    "@azure/msal-browser": "^2.23.0"
+  },
   "devDependencies": {
-    "@azure/msal-browser": "^2.23.0",
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.3.3",
@@ -32,6 +35,7 @@
     "@typescript-eslint/parser": "^5.18.0",
     "eslint": "^8.13.0",
     "rollup": "^2.75.6",
+    "rollup-plugin-analyzer": "^4.0.0",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",

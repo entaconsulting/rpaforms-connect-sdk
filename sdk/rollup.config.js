@@ -5,6 +5,7 @@ import del from "rollup-plugin-delete";
 import dts from "rollup-plugin-dts";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import packageJson from "./package.json";
+import analyzer from "rollup-plugin-analyzer";
 
 export default [
   {
@@ -25,6 +26,7 @@ export default [
       typescript({ tsconfig: "./tsconfig.json" }),
       // Delete dist folder with each new build.
       del({ targets: "dist/*" }),
+      analyzer({ summaryOnly: true }),
     ],
   },
   {
