@@ -1,3 +1,4 @@
+import { IFormSchema } from "@entaconsulting/form";
 import { getAppSettings } from "../../configuration/configureSettings";
 import getHttpRpaFormsClient from "../httpRpaFormsClient/httpRpaFormsClient";
 import {
@@ -12,7 +13,10 @@ export const create = async (
   formDefinitionId: string,
   expiresAt?: Date,
   useExistingDraft?: boolean,
-  initialValues?: Record<string, unknown>
+  initialValues?: Record<string, unknown>,
+  customFormDefinition?: {
+    schema: IFormSchema;
+  }
 ): Promise<CreateFormInstanceResult> => {
   const endpoint = "FormInstance";
   const response = await getHttpRpaFormsClient().post<{
@@ -20,6 +24,7 @@ export const create = async (
     sharedFormToken: string;
   }>(endpoint, {
     formId: formDefinitionId,
+    customFormDefinition,
     initialValues,
     expiresAt,
     useExistingDraft,
