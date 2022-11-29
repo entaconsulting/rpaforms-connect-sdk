@@ -16,8 +16,8 @@ const rpaFormsConnectSdkConfig = {
     appIdURI:
       "api://rpaforms-dev.azurewebsites.net/d3acdcda-130c-419a-b9d6-6ca1e0d2ceef",
   },
-  serviceUrl: "https://rpaforms-dev.azurewebsites.net/api",
-  // serviceUrl: "https://localhost:6001/api",
+  // serviceUrl: "https://rpaforms-dev.azurewebsites.net/api",
+  serviceUrl: "https://localhost:6001/api",
   publicFillUrl: "https://rpaforms-dev.azurewebsites.net/public/fill",
 };
 
@@ -265,6 +265,26 @@ const buildFormInstancesList = (
       document.createTextNode(instance.createdBy ?? "---")
     );
 
+    const tdProcessInfoStatus = document.createElement("td");
+    tdProcessInfoStatus.appendChild(
+      document.createTextNode(instance.processInfo?.status ?? "---")
+    );
+
+    const tdProcessInfoEndState = document.createElement("td");
+    tdProcessInfoEndState.appendChild(
+      document.createTextNode(instance.processInfo?.endState ?? "---")
+    );
+
+    const tdProcessInfoCompletionMessage = document.createElement("td");
+    tdProcessInfoCompletionMessage.appendChild(
+      document.createTextNode(instance.processInfo?.completionMessage ?? "---")
+    );
+
+    const tdProcessInfoUpdatedAt = document.createElement("td");
+    tdProcessInfoUpdatedAt.appendChild(
+      document.createTextNode(instance.processInfo?.updatedAt ?? "---")
+    );
+
     const tdOpen = document.createElement("td");
     const btnOpen = document.createElement("button");
     btnOpen.addEventListener("click", () => openFormInstance(instance.id));
@@ -288,6 +308,10 @@ const buildFormInstancesList = (
     tr.appendChild(tdCreatedBy);
     tr.appendChild(tdOpen);
     tr.appendChild(tdDelete);
+    tr.appendChild(tdProcessInfoStatus);
+    tr.appendChild(tdProcessInfoEndState);
+    tr.appendChild(tdProcessInfoCompletionMessage);
+    tr.appendChild(tdProcessInfoUpdatedAt);
 
     tBody.appendChild(tr);
   });

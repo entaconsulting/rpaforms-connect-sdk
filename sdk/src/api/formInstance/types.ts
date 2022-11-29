@@ -4,6 +4,15 @@ export type CreateFormInstanceResult = {
   formInstanceUri: string;
 };
 
+export type FormInstanceProcessInfo = {
+  status: string;
+  endState: FormInstanceProcessInfoEndState;
+  completionMessage: string;
+  updatedAt: string;
+};
+
+export type FormInstanceProcessInfoEndState = "OK" | "Error" | null;
+
 export type FormInstanceInfo = {
   id: string;
   name: string;
@@ -12,6 +21,7 @@ export type FormInstanceInfo = {
   createdAt: string;
   createdBy: string;
   state: string;
+  processInfo: FormInstanceProcessInfo;
 };
 
 export type FormInstanceListResult = {
