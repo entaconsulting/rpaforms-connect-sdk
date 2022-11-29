@@ -1,26 +1,26 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\AdrianTedeschi\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @entaconsulting/rpaforms-form
+  C:\Program Files\nodejs\node.exe C:\Users\Franco\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js install
 
 PATH: 
-  C:\Program Files\PowerShell\7;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files\Git\cmd;C:\Program Files\TortoiseGit\bin;C:\Program Files\dotnet\;C:\Program Files (x86)\dotnet\;C:\Users\AdrianTedeschi\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\ProgramData\chocolatey\bin;C:\Program Files\PowerShell\7\;c:\ngrok;C:\Users\AdrianTedeschi\AppData\Local\Microsoft\WindowsApps;C:\Users\AdrianTedeschi\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\Azure Data Studio\bin;C:\Users\AdrianTedeschi\AppData\Roaming\npm;C:\Users\AdrianTedeschi\.dotnet\tools;C:\Users\AdrianTedeschi\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\AdrianTedeschi\AppData\Local\Yarn\bin;
+  C:\Program Files\PowerShell\7;C:\Python310\Scripts\;C:\Python310\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Git\cmd;C:\Program Files\Microsoft VS Code\bin;C:\Program Files (x86)\Pulse Secure\VC142.CRT\X64\;C:\Program Files (x86)\Pulse Secure\VC142.CRT\X86\;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\dotnet\;C:\Windows\system32\config\systemprofile\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\PowerShell\7\;C:\Users\Franco\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Azure Data Studio\bin;C:\Users\Franco\.dotnet\tools;C:\Users\Franco\AppData\Roaming\npm
 
 Yarn version: 
-  1.22.10
+  1.22.19
 
 Node version: 
-  16.14.1
+  16.14.2
 
 Platform: 
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@entaconsulting%2frpaforms-form: Not found
-      at Request.params.callback [as _callback] (C:\Users\AdrianTedeschi\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66988:18)
-      at Request.self.callback (C:\Users\AdrianTedeschi\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140662:22)
+  Error: https://registry.yarnpkg.com/@entaconsulting%2fform: Not found
+      at Request.params.callback [as _callback] (C:\Users\Franco\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66145:18)
+      at Request.self.callback (C:\Users\Franco\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140890:22)
       at Request.emit (node:events:526:28)
-      at Request.<anonymous> (C:\Users\AdrianTedeschi\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141634:10)
+      at Request.<anonymous> (C:\Users\Franco\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141862:10)
       at Request.emit (node:events:526:28)
-      at IncomingMessage.<anonymous> (C:\Users\AdrianTedeschi\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141556:12)
+      at IncomingMessage.<anonymous> (C:\Users\Franco\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141784:12)
       at Object.onceWrapper (node:events:645:28)
       at IncomingMessage.emit (node:events:538:35)
       at endReadableNT (node:internal/streams/readable:1345:12)
@@ -29,7 +29,7 @@ Trace:
 npm manifest: 
   {
     "name": "@entaconsulting/rpaforms-connect-sdk",
-    "version": "0.5.2",
+    "version": "1.0.0",
     "description": "SDK for simplifing the use or RPA Forms Connect in JS apps.",
     "author": "Enta Consulting",
     "main": "dist/rpaforms-connect-sdk.js",
@@ -51,8 +51,13 @@ npm manifest:
       "start": "rollup -c rollup.config.development.js -w",
       "doc": "typedoc"
     },
-    "devDependencies": {
+    "peerDependencies": {
       "@azure/msal-browser": "^2.23.0",
+      "@entaconsulting/form": "^1.7.0"
+    },
+    "devDependencies": {
+      "@azure/msal-browser": "^2.32.0",
+      "@entaconsulting/form": "^1.7.0",
       "@rollup/plugin-commonjs": "^22.0.0",
       "@rollup/plugin-node-resolve": "^13.3.0",
       "@rollup/plugin-typescript": "^8.3.3",
@@ -61,6 +66,7 @@ npm manifest:
       "@typescript-eslint/parser": "^5.18.0",
       "eslint": "^8.13.0",
       "rollup": "^2.75.6",
+      "rollup-plugin-analyzer": "^4.0.0",
       "rollup-plugin-delete": "^2.0.0",
       "rollup-plugin-dts": "^4.2.2",
       "rollup-plugin-peer-deps-external": "^2.2.4",
@@ -80,17 +86,17 @@ Lockfile:
   # yarn lockfile v1
   
   
-  "@azure/msal-browser@^2.23.0":
-    version "2.26.0"
-    resolved "https://registry.yarnpkg.com/@azure/msal-browser/-/msal-browser-2.26.0.tgz#32d0c4cfe29a34030fd22106697a2d866893ac87"
-    integrity sha512-mSyZORSgeMEWz5Wo5alUqjxP/HKt/XcViZqc3dnKFM9347qYPIWsAlzHkEmmafNr1VGUo7MeqB0emZCOQrl04w==
+  "@azure/msal-browser@^2.32.0":
+    version "2.32.0"
+    resolved "https://registry.yarnpkg.com/@azure/msal-browser/-/msal-browser-2.32.0.tgz#9ad3c3ab8e191cdc21175ab5a755845230bac959"
+    integrity sha512-uDP0vNmIefM6+RjILGKu+zOiN+VGnEvxRfUIV5hOWOWLLkG7kcDPYG/v/EJMoG+R5DYW9jXA5nvZT76t5HdEAQ==
     dependencies:
-      "@azure/msal-common" "^7.0.0"
+      "@azure/msal-common" "^9.0.0"
   
-  "@azure/msal-common@^7.0.0":
-    version "7.0.0"
-    resolved "https://registry.yarnpkg.com/@azure/msal-common/-/msal-common-7.0.0.tgz#f4b52c6d9591cf8720dcb24c1d21fce2d186f871"
-    integrity sha512-EkaHGjv0kw1RljhboeffM91b+v9d5VtmyG+0a/gvdqjbLu3kDzEfoaS5BNM9QqMzbxgZylsjAjQDtxdHLX/ziA==
+  "@azure/msal-common@^9.0.0":
+    version "9.0.0"
+    resolved "https://registry.yarnpkg.com/@azure/msal-common/-/msal-common-9.0.0.tgz#4cea6ae2dcbac9af7251532e26969c91826ad578"
+    integrity sha512-uiFiFKVNTsRpmKio5bcObTuHcaHHZB2GEsjJJN8rbJNmzoYuZzNioOoK+J0QK0jEasRBgAoR5A8hSty2iKRzIg==
   
   "@babel/code-frame@^7.16.7":
     version "7.16.7"
@@ -1181,6 +1187,11 @@ Lockfile:
     integrity sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
     dependencies:
       glob "^7.1.3"
+  
+  rollup-plugin-analyzer@^4.0.0:
+    version "4.0.0"
+    resolved "https://registry.yarnpkg.com/rollup-plugin-analyzer/-/rollup-plugin-analyzer-4.0.0.tgz#96b757ed64a098b59d72f085319e68cdd86d5798"
+    integrity sha512-LL9GEt3bkXp6Wa19SNR5MWcvHNMvuTFYg+eYBZN2OIFhSWN+pEJUQXEKu5BsOeABob3x9PDaLKW7w5iOJnsESQ==
   
   rollup-plugin-delete@^2.0.0:
     version "2.0.0"
