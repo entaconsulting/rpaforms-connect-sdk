@@ -5,9 +5,9 @@ export type CreateFormInstanceResult = {
 };
 
 export type FormInstanceProcessInfo = {
-  status: string;
+  status: string | null;
   endState: FormInstanceProcessInfoEndState;
-  completionMessage: string;
+  completionMessage: string | null;
   updatedAt: string;
 };
 
