@@ -52,7 +52,7 @@ export const listUserInstances = async (options: FormInstanceQueryOptions) => {
   return response.data;
 };
 export const getInstanceUri = async (id: string, expiresAt?: Date) => {
-  const endpoint = `FormInstance/${id}/GetAccessToken`;
+  const endpoint = `FormInstance/${id}/AccessToken`;
   const response = await getHttpRpaFormsClient().get<{
     sharedFormId: string;
     sharedFormToken: string;
