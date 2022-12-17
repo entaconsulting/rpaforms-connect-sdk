@@ -15,7 +15,7 @@ export const create = async (
   useExistingDraft?: boolean,
   initialValues?: Record<string, unknown>,
   customFormDefinition?: {
-    schema: IFormSchema;
+    schema: unknown;
   }
 ): Promise<CreateFormInstanceResult> => {
   const endpoint = "FormInstance";
