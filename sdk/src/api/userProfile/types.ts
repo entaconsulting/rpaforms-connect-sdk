@@ -4,4 +4,6 @@ export type FormDefinition = {
   description?: string;
   disabled: boolean;
   tags?: string[];
+  displayName?: string;
+  displayDescription?: string;
 };
