@@ -10,6 +10,10 @@ import {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const buildResponseError = (err: any) => {
+  if (err.response?.status === 400) {
+    const { data } = err.response;
+    return new Error(data.detail);
+  }
   if (err.response?.status === 404) {
     return new Error(
       "There may be a problem with the backend. Resource not found."
@@ -82,6 +86,7 @@ export const configureHttpRpaFormsClient = () => {
     const processedError = isProblemDetails(error)
       ? new ApiError(error)
       : buildResponseError(error);
+
     return Promise.reject(processedError);
   });
 };
