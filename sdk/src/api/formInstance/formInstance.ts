@@ -1,4 +1,3 @@
-import { IFormSchema } from "@entaconsulting/form";
 import { getAppSettings } from "../../configuration/configureSettings";
 import getHttpRpaFormsClient from "../httpRpaFormsClient/httpRpaFormsClient";
 import {
