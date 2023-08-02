@@ -48,6 +48,8 @@ export type FormInstanceQueryOptions = {
   continuationToken?: string | null;
 };
 
+export type FormInstanceType = "formInstance" | "stageInstance";
+
 export type StageInfo = {
   stageInstanceId: string;
   formInstanceId: string;
@@ -57,6 +59,7 @@ export type StageInfo = {
   stageCreatedAt: string;
   stageLastSaved: string;
   stageState: string;
+  type?: FormInstanceType;
 };
 
 export type StageListResult = {
