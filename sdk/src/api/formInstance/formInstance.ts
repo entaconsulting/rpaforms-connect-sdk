@@ -89,5 +89,5 @@ export const listUserStages = async (options: StageQueryOptions) => {
 
 const buildFormInstanceUri = (id: string) => {
   const { publicFillUrl } = getAppSettings();
-  return `${publicFillUrl}?fid=${id}&loginHint=${getCurrentUsername()}&auth=${getCurrentAuthType()}}`;
+  return `${publicFillUrl}?fid=${id}&loginHint=${getCurrentUsername()}&auth=${getCurrentAuthType()}`;
 };

@@ -22,6 +22,17 @@ export const selectAccount = () => {
       "Cannot call selectAccount when authentication method is delegated."
     );
   }
+
+  if (
+    (getAuthSettings() as SdkAuthenticationOptions).authority
+      .toLowerCase()
+      .startsWith("https://login.microsoftonline.com")
+  ) {
+    authType = "AAD";
+  } else {
+    authType = "B2C";
+  }
+
   const currentAccounts = myMSALObj.getAllAccounts();
   if (currentAccounts.length === 0) {
     username = "";
@@ -32,16 +43,6 @@ export const selectAccount = () => {
     console.warn("Multiple accounts detected.");
   } else if (currentAccounts.length === 1) {
     username = currentAccounts[0].username;
-  }
-
-  if (
-    (getAuthSettings() as SdkAuthenticationOptions).authority
-      .toLowerCase()
-      .startsWith("https://login.microsoftonline.com")
-  ) {
-    authType = "AAD";
-  } else {
-    authType = "B2C";
   }
 };
 
@@ -77,7 +78,7 @@ export const getCurrentUsername = () => {
   return username;
 };
 export const getCurrentAuthType = () => {
-  if (authType) {
+  if (!authType) {
     throw new Error("Authentication Type is null");
   }
   return authType;
