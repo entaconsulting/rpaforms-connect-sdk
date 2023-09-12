@@ -4,8 +4,11 @@ export type SdkAuthenticationOptions = {
   redirectUri: string;
   appIdURI?: string;
 };
+export type AuthenticationType = "AAD" | "B2C";
 export type DelegatedAuthenticationOptions = {
   getToken: () => Promise<string | undefined>;
+  authType: AuthenticationType;
+  username: string;
 };
 export type AuthenticationOptions =
   | SdkAuthenticationOptions

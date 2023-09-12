@@ -1,3 +1,7 @@
+import {
+  getCurrentAuthType,
+  getCurrentUsername,
+} from "../../authentication/authentication";
 import { getAppSettings } from "../../configuration/configureSettings";
 import getHttpRpaFormsClient from "../httpRpaFormsClient/httpRpaFormsClient";
 import {
@@ -50,28 +54,15 @@ export const listUserInstances = async (options: FormInstanceQueryOptions) => {
   );
   return response.data;
 };
-export const getInstanceUri = async (id: string, expiresAt?: Date) => {
-  const endpoint = `FormInstance/${id}/AccessToken`;
-  const response = await getHttpRpaFormsClient().get<{
-    sharedFormId: string;
-    sharedFormToken: string;
-  }>(endpoint, { params: { expiresAt } });
-  return buildFormInstanceUri(response.data.sharedFormToken);
+export const getInstanceUri = async (id: string) => {
+  return buildFormInstanceUri(id);
 };
 
-export const getStageInstanceUri = async (
-  stageInstanceId: string,
-  expiresAt?: Date
-) => {
+export const getStageInstanceUri = async (stageInstanceId: string) => {
   const parts = stageInstanceId.split("_");
   if (parts.length !== 2) throw new Error("invalid stageInstanceId format");
 
-  const endpoint = `FormInstance/${parts[0]}/stage/${parts[1]}/AccessToken`;
-  const response = await getHttpRpaFormsClient().get<{
-    stageInstanceId: string;
-    sharedFormToken: string;
-  }>(endpoint, { params: { expiresAt } });
-  return buildFormInstanceUri(response.data.sharedFormToken);
+  return buildFormInstanceUri(parts[0]);
 };
 
 export const deleteInstance = async (id: string) => {
@@ -96,7 +87,7 @@ export const listUserStages = async (options: StageQueryOptions) => {
   return response.data;
 };
 
-const buildFormInstanceUri = (token: string) => {
+const buildFormInstanceUri = (id: string) => {
   const { publicFillUrl } = getAppSettings();
-  return `${publicFillUrl}?token=${token}`;
+  return `${publicFillUrl}?fid=${id}&loginHint=${getCurrentUsername()}&auth=${getCurrentAuthType()}}`;
 };

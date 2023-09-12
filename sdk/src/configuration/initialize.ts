@@ -1,5 +1,8 @@
 import { configureHttpRpaFormsClient } from "../api/httpRpaFormsClient/httpRpaFormsClient";
-import { selectAccount } from "../authentication/authentication";
+import {
+  selectAccount,
+  setVariablesDelegated,
+} from "../authentication/authentication";
 import configureAuth from "../authentication/configureAuth";
 import { configureSettings } from "./configureSettings";
 import {
@@ -12,6 +15,8 @@ const initialize = (options: RpaFormsSdkConfigurationOptions) => {
   configureAuth();
   if (!isDelegatedAuthentictionOptions(options.authentication)) {
     selectAccount();
+  } else {
+    setVariablesDelegated(options.authentication);
   }
   configureHttpRpaFormsClient();
 };
