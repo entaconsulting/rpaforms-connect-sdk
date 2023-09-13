@@ -54,11 +54,14 @@ export const listUserInstances = async (options: FormInstanceQueryOptions) => {
   );
   return response.data;
 };
-export const getInstanceUri = async (id: string) => {
+export const getInstanceUri = async (id: string, expiresAt?: Date) => {
   return buildFormInstanceUri(id);
 };
 
-export const getStageInstanceUri = async (stageInstanceId: string) => {
+export const getStageInstanceUri = async (
+  stageInstanceId: string,
+  expiresAt?: Date
+) => {
   const parts = stageInstanceId.split("_");
   if (parts.length !== 2) throw new Error("invalid stageInstanceId format");
 
