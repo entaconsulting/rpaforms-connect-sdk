@@ -70,11 +70,6 @@ export const needsExplicitLogin = () => {
   return forceLogin;
 };
 export const getCurrentUsername = () => {
-  if (authMode === "delegated") {
-    throw new Error(
-      "Cannot call getCurrentUsername when authentication method is delegated."
-    );
-  }
   return username;
 };
 export const getCurrentAuthType = () => {
