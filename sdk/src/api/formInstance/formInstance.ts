@@ -35,7 +35,7 @@ export const create = async (
   return {
     formInstanceId: response.data.sharedFormId,
     formInstanceToken: response.data.sharedFormToken,
-    formInstanceUri: buildFormInstanceUri(response.data.sharedFormToken),
+    formInstanceUri: buildFormInstanceUri(response.data.sharedFormId),
   };
 };
 
