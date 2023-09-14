@@ -3,12 +3,17 @@ import {
   SilentRequest,
 } from "@azure/msal-browser";
 import { getAuthSettings } from "../configuration/configureSettings";
-import { DelegatedAuthenticationOptions } from "../rpaforms-connect-sdk";
+import {
+  AuthenticationType,
+  DelegatedAuthenticationOptions,
+  SdkAuthenticationOptions,
+} from "../rpaforms-connect-sdk";
 import { AccountNotFoundError } from "./authError";
 import { authMode, myMSALObj, tokenRequest } from "./configureAuth";
 
 // common configuration parameters are located at msalConfig.js
 let username = "";
+let authType: AuthenticationType | undefined = undefined;
 let forceLogin = false;
 
 export const selectAccount = () => {
@@ -17,6 +22,17 @@ export const selectAccount = () => {
       "Cannot call selectAccount when authentication method is delegated."
     );
   }
+
+  if (
+    (getAuthSettings() as SdkAuthenticationOptions).authority
+      .toLowerCase()
+      .startsWith("https://login.microsoftonline.com")
+  ) {
+    authType = "AAD";
+  } else {
+    authType = "B2C";
+  }
+
   const currentAccounts = myMSALObj.getAllAccounts();
   if (currentAccounts.length === 0) {
     username = "";
@@ -28,6 +44,13 @@ export const selectAccount = () => {
   } else if (currentAccounts.length === 1) {
     username = currentAccounts[0].username;
   }
+};
+
+export const setVariablesDelegated = (
+  options: DelegatedAuthenticationOptions
+) => {
+  username = options.username;
+  authType = options.authType;
 };
 
 export const isAutenticated = () => {
@@ -47,14 +70,14 @@ export const needsExplicitLogin = () => {
   return forceLogin;
 };
 export const getCurrentUsername = () => {
-  if (authMode === "delegated") {
-    throw new Error(
-      "Cannot call getCurrentUsername when authentication method is delegated."
-    );
-  }
   return username;
 };
-
+export const getCurrentAuthType = () => {
+  if (!authType) {
+    throw new Error("Authentication Type is null");
+  }
+  return authType;
+};
 export const signIn = async () => {
   if (authMode === "delegated") {
     throw new Error(

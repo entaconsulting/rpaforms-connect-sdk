@@ -6,6 +6,7 @@ import {
 } from "@azure/msal-browser";
 import { msalConfig } from "../authentication/msalConfig";
 import {
+  AuthenticationType,
   FormDefinition,
   formInstance,
   FormInstanceListResult,
@@ -48,6 +49,8 @@ const rpaFormsConnectSdkConfig = {
         console.error(error);
       }
     },
+    username: "test",
+    authType: "AAD" as AuthenticationType,
   },
   serviceUrl: "https://rpaforms-dev.azurewebsites.net/api",
   publicFillUrl: "https://rpaforms-dev.azurewebsites.net/public/fill",
