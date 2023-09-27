@@ -14,15 +14,15 @@ export const configureSettings = (options: RpaFormsSdkConfigurationOptions) => {
         ...options.authentication,
         appIdURI:
           options.authentication.appIdURI ??
-          "api://rpaforms.com/b782e2e8-9682-4898-b211-a304714f4f6b",
+          "api://app.rpaconnect.io/b782e2e8-9682-4898-b211-a304714f4f6b",
       };
 
   settings = {
     ...options,
     authentication: authOptions,
-    serviceUrl: options.serviceUrl ?? "https://app.rpaforms.com/api",
+    serviceUrl: options.serviceUrl ?? "https://app.rpaconnect.io/api",
     publicFillUrl:
-      options.publicFillUrl ?? "https://app.rpaforms.com/public/fill",
+      options.publicFillUrl ?? "https://app.rpaconnect.io/public/fill",
   };
 };
 
