@@ -6,8 +6,10 @@ import { getAppSettings } from "../../configuration/configureSettings";
 import getHttpRpaFormsClient from "../httpRpaFormsClient/httpRpaFormsClient";
 import {
   CreateFormInstanceResult,
+  FormInstanceInfo,
   FormInstanceListResult,
   FormInstanceQueryOptions,
+  StageInfo,
   StageListResult,
   StageQueryOptions,
 } from "./types";
@@ -54,6 +56,7 @@ export const listUserInstances = async (options: FormInstanceQueryOptions) => {
   );
   return response.data;
 };
+
 export const getInstanceUri = async (id: string) => {
   return buildFormInstanceUri(id);
 };
@@ -84,6 +87,27 @@ export const listUserStages = async (options: StageQueryOptions) => {
       headers,
     }
   );
+  return response.data;
+};
+
+export const getInstanceInfo = async (formInstanceId: string) => {
+  const endpoint = `FormInstance/${formInstanceId}/info`;
+  const response = await getHttpRpaFormsClient().get<FormInstanceInfo>(
+    endpoint
+  );
+
+  return response.data;
+};
+
+export const getStageInfo = async (id: string) => {
+  const parts = id.split("_");
+
+  const endpoint = `FormInstance/${parts[0]}/stage/info`;
+  const queryOptions = { stageIndex: parts?.[1] };
+  const response = await getHttpRpaFormsClient().get<StageInfo>(endpoint, {
+    params: queryOptions,
+  });
+
   return response.data;
 };
 
