@@ -16,8 +16,8 @@ const rpaFormsConnectSdkConfig = {
     appIdURI:
       "api://rpaforms-dev.azurewebsites.net/d3acdcda-130c-419a-b9d6-6ca1e0d2ceef",
   },
-  // serviceUrl: "https://rpaforms-dev.azurewebsites.net/api",
-  serviceUrl: "https://localhost:6001/api",
+  serviceUrl: "https://rpaforms-lab.azurewebsites.net/api",
+  // serviceUrl: "https://localhost:6001/api",
   publicFillUrl: "https://rpaforms-dev.azurewebsites.net/public/fill",
 };
 
@@ -164,6 +164,18 @@ const deleteFormInstance = (id: string, tr: HTMLTableRowElement) => {
       alert(e ? e.message : "Error");
     });
 };
+
+const cloneInstance = (id: string) => {
+  formInstance
+    .cloneInstance(id)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((e) => {
+      alert(e ? e.message : "Error");
+    });
+};
+
 const buildFormDefinitionsList = (formDefinitions: FormDefinition[]) => {
   const table = document.createElement("table");
   table.className = "table table-bordered";
@@ -302,12 +314,21 @@ const buildFormInstancesList = (
 
     tdOpen.appendChild(btnDelete);
 
+    const tdClone = document.createElement("td");
+    const btnClone = document.createElement("button");
+    btnClone.addEventListener("click", () => cloneInstance(instance.id));
+    btnClone.innerHTML = "Clonar";
+    btnClone.className = "btn btn-info";
+
+    tdOpen.appendChild(btnClone);
+
     tr.appendChild(tdFormTitle);
     tr.appendChild(tdState);
     tr.appendChild(tdLastSaved);
     tr.appendChild(tdCreatedBy);
     tr.appendChild(tdOpen);
     tr.appendChild(tdDelete);
+    tr.appendChild(tdClone);
     tr.appendChild(tdProcessInfoStatus);
     tr.appendChild(tdProcessInfoEndState);
     tr.appendChild(tdProcessInfoCompletionMessage);
