@@ -41,6 +41,12 @@ const filterLastSavedToInput = document.getElementById(
 const filterStateInput = document.getElementById(
   "FiltrState"
 ) as HTMLInputElement;
+const filterTagName = document.getElementById(
+  "FilterTagName"
+) as HTMLInputElement;
+const filterTagInput = document.getElementById(
+  "FilterTagValor"
+) as HTMLInputElement;
 const refreshInstancesButton = document.getElementById(
   "RefreshInstances"
 ) as HTMLButtonElement;
@@ -89,6 +95,9 @@ const handleListFormInstances = (addMore: boolean) => {
   }
   if (filterStateInput.value) {
     filter.state = filterStateInput.value;
+  }
+  if (filterTagInput.value && filterTagName.value) {
+    filter.tags = { [filterTagName.value]: filterTagInput.value };
   }
 
   formInstance
