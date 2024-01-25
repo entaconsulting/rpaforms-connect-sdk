@@ -111,10 +111,10 @@ export const getStageInfo = async (id: string) => {
   return response.data;
 };
 
-export const cloneInstance = async (id: string) => {
+export const cloneInstance = async (id: string, withAttachments: boolean) => {
   const parts = id.split("_");
 
-  const endpoint = `FormInstance/${parts[0]}/clone`;
+  const endpoint = `FormInstance/${parts[0]}/clone?withAttachments=${withAttachments}`;
   const response = await getHttpRpaFormsClient().post<FormInstanceInfo>(
     endpoint
   );

@@ -165,9 +165,9 @@ const deleteFormInstance = (id: string, tr: HTMLTableRowElement) => {
     });
 };
 
-const cloneInstance = (id: string) => {
+const cloneInstance = (id: string, withAttachments: boolean) => {
   formInstance
-    .cloneInstance(id)
+    .cloneInstance(id, withAttachments)
     .then((result) => {
       console.log(result);
     })
@@ -316,7 +316,7 @@ const buildFormInstancesList = (
 
     const tdClone = document.createElement("td");
     const btnClone = document.createElement("button");
-    btnClone.addEventListener("click", () => cloneInstance(instance.id));
+    btnClone.addEventListener("click", () => cloneInstance(instance.id, true));
     btnClone.innerHTML = "Clonar";
     btnClone.className = "btn btn-info";
 
