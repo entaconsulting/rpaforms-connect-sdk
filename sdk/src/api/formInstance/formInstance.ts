@@ -111,6 +111,16 @@ export const getStageInfo = async (id: string) => {
   return response.data;
 };
 
+export const cloneInstance = async (formInstanceId: string, withAttachments?: boolean) => {
+  const endpoint = `FormInstance/${formInstanceId}/clone?withAttachments=${withAttachments ?? false}`;
+
+  const response = await getHttpRpaFormsClient().post<FormInstanceInfo>(
+    endpoint
+  );
+
+  return response.data;
+};
+
 const buildFormInstanceUri = (id: string) => {
   const { publicFillUrl } = getAppSettings();
   return `${publicFillUrl}?fid=${id}&loginHint=${getCurrentUsername()}&auth=${getCurrentAuthType()}`;

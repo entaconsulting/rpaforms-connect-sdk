@@ -173,6 +173,18 @@ const deleteFormInstance = (id: string, tr: HTMLTableRowElement) => {
       alert(e ? e.message : "Error");
     });
 };
+
+const cloneInstance = (id: string, withAttachments: boolean) => {
+  formInstance
+    .cloneInstance(id, withAttachments)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((e) => {
+      alert(e ? e.message : "Error");
+    });
+};
+
 const buildFormDefinitionsList = (formDefinitions: FormDefinition[]) => {
   const table = document.createElement("table");
   table.className = "table table-bordered";
@@ -311,12 +323,21 @@ const buildFormInstancesList = (
 
     tdOpen.appendChild(btnDelete);
 
+    const tdClone = document.createElement("td");
+    const btnClone = document.createElement("button");
+    btnClone.addEventListener("click", () => cloneInstance(instance.id, true));
+    btnClone.innerHTML = "Clonar";
+    btnClone.className = "btn btn-info";
+
+    tdOpen.appendChild(btnClone);
+
     tr.appendChild(tdFormTitle);
     tr.appendChild(tdState);
     tr.appendChild(tdLastSaved);
     tr.appendChild(tdCreatedBy);
     tr.appendChild(tdOpen);
     tr.appendChild(tdDelete);
+    tr.appendChild(tdClone);
     tr.appendChild(tdProcessInfoStatus);
     tr.appendChild(tdProcessInfoEndState);
     tr.appendChild(tdProcessInfoCompletionMessage);
