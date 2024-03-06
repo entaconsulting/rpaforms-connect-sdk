@@ -9,6 +9,7 @@ export type FormInstanceProcessInfo = {
   endState: FormInstanceProcessInfoEndState;
   completionMessage: string | null;
   updatedAt: string;
+  tags?: Record<string, string>;
 };
 
 export type FormInstanceProcessInfoEndState = "OK" | "Error" | null;
@@ -37,6 +38,12 @@ export type FormInstanceQueryOptionsFilter = {
   state?: string;
   title?: string;
   tags?: Record<string, string>;
+  processInfoStatus?: string;
+  processInfoEndState?: string;
+  processInfoCompletionMessage?: string;
+  processInfoTags?: Record<string, string>;
+  processInfoUpdatedAtFrom?: Date;
+  processInfoUpdatedAtTo?: Date;
 };
 
 export type FormInstanceQueryOptions = {

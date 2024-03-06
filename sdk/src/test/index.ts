@@ -18,8 +18,8 @@ const rpaFormsConnectSdkConfig = {
     appIdURI:
       "api://rpaforms-dev.azurewebsites.net/d3acdcda-130c-419a-b9d6-6ca1e0d2ceef",
   },
-  // serviceUrl: "https://rpaforms-dev.azurewebsites.net/api",
-  serviceUrl: "https://localhost:6001/api",
+  serviceUrl: "https://rpaforms-lab.azurewebsites.net/api",
+  // serviceUrl: "https://localhost:6001/api",
   publicFillUrl: "https://rpaforms-dev.azurewebsites.net/public/fill",
 };
 
@@ -49,6 +49,27 @@ const filterTagName = document.getElementById(
 ) as HTMLInputElement;
 const filterTagInput = document.getElementById(
   "FilterTagValor"
+) as HTMLInputElement;
+const filterProcessInfoStatusInput = document.getElementById(
+  "FilterProcessInfoStatus"
+) as HTMLInputElement;
+const filterProcessInfoEndStateInput = document.getElementById(
+  "FilterProcessInfoEndState"
+) as HTMLInputElement;
+const filterProcessInfoCompletionMessageInput = document.getElementById(
+  "FilterProcessInfoCompletionMessage"
+) as HTMLInputElement;
+const filterProcessInfoTagNameInput = document.getElementById(
+  "FilterProcessInfoTagName"
+) as HTMLInputElement;
+const filterProcessInfoTagValorInput = document.getElementById(
+  "FilterProcessInfoTagValor"
+) as HTMLInputElement;
+const filterProcessInfoUpdatedFromInput = document.getElementById(
+  "FilterProcessInfoUpdatedFrom"
+) as HTMLInputElement;
+const filterProcessInfoUpdatedToInput = document.getElementById(
+  "FilterProcessInfoUpdatedTo"
 ) as HTMLInputElement;
 const refreshInstancesButton = document.getElementById(
   "RefreshInstances"
@@ -114,6 +135,35 @@ const handleListFormInstances = (addMore: boolean) => {
   }
   if (filterTagInput.value && filterTagName.value) {
     filter.tags = { [filterTagName.value]: filterTagInput.value };
+  }
+  if (filterProcessInfoStatusInput.value) {
+    filter.processInfoStatus = filterProcessInfoStatusInput.value;
+  }
+  if (filterProcessInfoEndStateInput.value) {
+    filter.processInfoEndState = filterProcessInfoEndStateInput.value;
+  }
+  if (filterProcessInfoCompletionMessageInput.value) {
+    filter.processInfoCompletionMessage =
+      filterProcessInfoCompletionMessageInput.value;
+  }
+  if (
+    filterProcessInfoTagNameInput.value &&
+    filterProcessInfoTagValorInput.value
+  ) {
+    filter.processInfoTags = {
+      [filterProcessInfoTagNameInput.value]:
+        filterProcessInfoTagValorInput.value,
+    };
+  }
+  if (filterProcessInfoUpdatedFromInput.value) {
+    filter.processInfoUpdatedAtFrom = new Date(
+      filterProcessInfoUpdatedFromInput.value
+    );
+  }
+  if (filterProcessInfoUpdatedToInput.value) {
+    filter.processInfoUpdatedAtTo = new Date(
+      filterProcessInfoUpdatedToInput.value
+    );
   }
 
   formInstance
