@@ -24,9 +24,7 @@ const rpaFormsConnectSdkConfig = {
 //mapeo de elementos de la página
 const signInButton = document.getElementById("SignIn") as HTMLButtonElement;
 const signOutButton = document.getElementById("SignOut") as HTMLButtonElement;
-const listFormDefinitionsButton = document.getElementById(
-  "ListFormDefinitions"
-) as HTMLButtonElement;
+const listForms = document.getElementById("ListForms") as HTMLButtonElement;
 const loadMoreButton = document.getElementById(
   "ListFormInstancesMore"
 ) as HTMLButtonElement;
@@ -47,6 +45,27 @@ const filterTagName = document.getElementById(
 const filterTagInput = document.getElementById(
   "FilterTagValor"
 ) as HTMLInputElement;
+const filterProcessInfoStatusInput = document.getElementById(
+  "FilterProcessInfoStatus"
+) as HTMLInputElement;
+const filterProcessInfoEndStateInput = document.getElementById(
+  "FilterProcessInfoEndState"
+) as HTMLInputElement;
+const filterProcessInfoCompletionMessageInput = document.getElementById(
+  "FilterProcessInfoCompletionMessage"
+) as HTMLInputElement;
+const filterProcessInfoTagNameInput = document.getElementById(
+  "FilterProcessInfoTagName"
+) as HTMLInputElement;
+const filterProcessInfoTagValorInput = document.getElementById(
+  "FilterProcessInfoTagValor"
+) as HTMLInputElement;
+const filterProcessInfoUpdatedFromInput = document.getElementById(
+  "FilterProcessInfoUpdatedFrom"
+) as HTMLInputElement;
+const filterProcessInfoUpdatedToInput = document.getElementById(
+  "FilterProcessInfoUpdatedTo"
+) as HTMLInputElement;
 const refreshInstancesButton = document.getElementById(
   "RefreshInstances"
 ) as HTMLButtonElement;
@@ -65,11 +84,11 @@ const listFormInstancesResult = document.getElementById(
 ) as HTMLDivElement;
 
 //listar los forms que el usuario puede crear
-const handleListFormDefinitions = () => {
+const handleListForms = () => {
   listFormDefinitionsResult.innerHTML = "Loading...";
 
   return userProfile
-    .formDefinitions()
+    .forms()
     .then((result) => {
       buildFormDefinitionsList(result);
     })
@@ -98,6 +117,35 @@ const handleListFormInstances = (addMore: boolean) => {
   }
   if (filterTagInput.value && filterTagName.value) {
     filter.tags = { [filterTagName.value]: filterTagInput.value };
+  }
+  if (filterProcessInfoStatusInput.value) {
+    filter.processInfoStatus = filterProcessInfoStatusInput.value;
+  }
+  if (filterProcessInfoEndStateInput.value) {
+    filter.processInfoEndState = filterProcessInfoEndStateInput.value;
+  }
+  if (filterProcessInfoCompletionMessageInput.value) {
+    filter.processInfoCompletionMessage =
+      filterProcessInfoCompletionMessageInput.value;
+  }
+  if (
+    filterProcessInfoTagNameInput.value &&
+    filterProcessInfoTagValorInput.value
+  ) {
+    filter.processInfoTags = {
+      [filterProcessInfoTagNameInput.value]:
+        filterProcessInfoTagValorInput.value,
+    };
+  }
+  if (filterProcessInfoUpdatedFromInput.value) {
+    filter.processInfoUpdatedAtFrom = new Date(
+      filterProcessInfoUpdatedFromInput.value
+    );
+  }
+  if (filterProcessInfoUpdatedToInput.value) {
+    filter.processInfoUpdatedAtTo = new Date(
+      filterProcessInfoUpdatedToInput.value
+    );
   }
 
   formInstance
@@ -185,7 +233,20 @@ const cloneInstance = (id: string, withAttachments: boolean) => {
     });
 };
 
-const buildFormDefinitionsList = (formDefinitions: FormDefinition[]) => {
+const formDefinitionsInfo = (id: string) => {
+  userProfile
+    .formDefinitionsInfo(id)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((e) => {
+      alert(e ? e.message : "Error");
+    });
+};
+
+const buildFormDefinitionsList = (
+  formDefinitions: FormDefinition[]
+) => {
   const table = document.createElement("table");
   table.className = "table table-bordered";
 
@@ -198,13 +259,6 @@ const buildFormDefinitionsList = (formDefinitions: FormDefinition[]) => {
 
     const tdFormName = document.createElement("td");
     tdFormName.appendChild(document.createTextNode(formDef.name));
-
-    const tdFormTags = document.createElement("td");
-    tdFormTags.appendChild(
-      document.createTextNode(
-        formDef.tags?.join(",") ?? "No hay tags definidos"
-      )
-    );
 
     const tdCreate = document.createElement("td");
     const btnCreate = document.createElement("button");
@@ -226,11 +280,20 @@ const buildFormDefinitionsList = (formDefinitions: FormDefinition[]) => {
     btnList.className = "btn btn-primary";
     tdList.appendChild(btnList);
 
+    const tdInfo = document.createElement("td");
+    const btnInfo = document.createElement("button");
+    btnInfo.addEventListener("click", () =>
+      formDefinitionsInfo(formDef.formDefinitionId)
+    );
+    btnInfo.innerHTML = "Info";
+    btnInfo.className = "btn btn-primary";
+    tdInfo.appendChild(btnInfo);
+
     tr.appendChild(tdFormId);
     tr.appendChild(tdFormName);
-    tr.appendChild(tdFormTags);
     tr.appendChild(tdCreate);
     tr.appendChild(tdList);
+    tr.appendChild(tdInfo);
 
     tBody.appendChild(tr);
   });
@@ -360,9 +423,9 @@ document.addEventListener(
     authentication.selectAccount();
     setAccountInfo();
 
-    listFormDefinitionsButton.addEventListener(
+    listForms.addEventListener(
       "click",
-      authentication.withAuthentication(handleListFormDefinitions)
+      authentication.withAuthentication(handleListForms)
     );
 
     refreshInstancesButton.addEventListener("click", () =>
