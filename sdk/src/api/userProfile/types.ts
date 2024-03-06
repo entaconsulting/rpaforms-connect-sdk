@@ -3,7 +3,15 @@ export type FormDefinition = {
   name: string;
   description?: string;
   disabled: boolean;
-  tags?: string[];
   displayName?: string;
   displayDescription?: string;
+};
+
+export type FormDefinitionWithTags = FormDefinition & { tags?: string[] };
+
+export type FormDefinitionInfo = {
+  formDefinitionId: string;
+  name: string;
+  description?: string;
+  tags?: string[];
 };

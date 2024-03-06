@@ -1,6 +1,8 @@
+import { formDefinitions } from "../api/userProfile/userProfile";
 import {
   authentication,
   FormDefinition,
+  FormDefinitionWithTags,
   formInstance,
   FormInstanceListResult,
   FormInstanceQueryOptionsFilter,
@@ -27,6 +29,7 @@ const signOutButton = document.getElementById("SignOut") as HTMLButtonElement;
 const listFormDefinitionsButton = document.getElementById(
   "ListFormDefinitions"
 ) as HTMLButtonElement;
+const listForms = document.getElementById("ListForms") as HTMLButtonElement;
 const loadMoreButton = document.getElementById(
   "ListFormInstancesMore"
 ) as HTMLButtonElement;
@@ -70,6 +73,19 @@ const handleListFormDefinitions = () => {
 
   return userProfile
     .formDefinitions()
+    .then((result) => {
+      buildFormDefinitionsList(result);
+    })
+    .catch((e) => {
+      listFormDefinitionsResult.innerHTML = e.message;
+    });
+};
+
+const handleListForms = () => {
+  listFormDefinitionsResult.innerHTML = "Loading...";
+
+  return userProfile
+    .forms()
     .then((result) => {
       buildFormDefinitionsList(result);
     })
@@ -185,7 +201,20 @@ const cloneInstance = (id: string, withAttachments: boolean) => {
     });
 };
 
-const buildFormDefinitionsList = (formDefinitions: FormDefinition[]) => {
+const formDefinitionsInfo = (id: string) => {
+  userProfile
+    .formDefinitionsInfo(id)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((e) => {
+      alert(e ? e.message : "Error");
+    });
+};
+
+const buildFormDefinitionsList = (
+  formDefinitions: FormDefinitionWithTags[]
+) => {
   const table = document.createElement("table");
   table.className = "table table-bordered";
 
@@ -226,11 +255,21 @@ const buildFormDefinitionsList = (formDefinitions: FormDefinition[]) => {
     btnList.className = "btn btn-primary";
     tdList.appendChild(btnList);
 
+    const tdInfo = document.createElement("td");
+    const btnInfo = document.createElement("button");
+    btnInfo.addEventListener("click", () =>
+      formDefinitionsInfo(formDef.formDefinitionId)
+    );
+    btnInfo.innerHTML = "Info";
+    btnInfo.className = "btn btn-primary";
+    tdInfo.appendChild(btnInfo);
+
     tr.appendChild(tdFormId);
     tr.appendChild(tdFormName);
     tr.appendChild(tdFormTags);
     tr.appendChild(tdCreate);
     tr.appendChild(tdList);
+    tr.appendChild(tdInfo);
 
     tBody.appendChild(tr);
   });
@@ -363,6 +402,11 @@ document.addEventListener(
     listFormDefinitionsButton.addEventListener(
       "click",
       authentication.withAuthentication(handleListFormDefinitions)
+    );
+
+    listForms.addEventListener(
+      "click",
+      authentication.withAuthentication(handleListForms)
     );
 
     refreshInstancesButton.addEventListener("click", () =>
