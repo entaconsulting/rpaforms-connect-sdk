@@ -1,8 +1,6 @@
-import { formDefinitions } from "../api/userProfile/userProfile";
 import {
   authentication,
   FormDefinition,
-  FormDefinitionWithTags,
   formInstance,
   FormInstanceListResult,
   FormInstanceQueryOptionsFilter,
@@ -18,17 +16,14 @@ const rpaFormsConnectSdkConfig = {
     appIdURI:
       "api://rpaforms-dev.azurewebsites.net/d3acdcda-130c-419a-b9d6-6ca1e0d2ceef",
   },
-  serviceUrl: "https://rpaforms-lab.azurewebsites.net/api",
-  // serviceUrl: "https://localhost:6001/api",
+  // serviceUrl: "https://rpaforms-dev.azurewebsites.net/api",
+  serviceUrl: "https://localhost:6001/api",
   publicFillUrl: "https://rpaforms-dev.azurewebsites.net/public/fill",
 };
 
 //mapeo de elementos de la página
 const signInButton = document.getElementById("SignIn") as HTMLButtonElement;
 const signOutButton = document.getElementById("SignOut") as HTMLButtonElement;
-const listFormDefinitionsButton = document.getElementById(
-  "ListFormDefinitions"
-) as HTMLButtonElement;
 const listForms = document.getElementById("ListForms") as HTMLButtonElement;
 const loadMoreButton = document.getElementById(
   "ListFormInstancesMore"
@@ -89,19 +84,6 @@ const listFormInstancesResult = document.getElementById(
 ) as HTMLDivElement;
 
 //listar los forms que el usuario puede crear
-const handleListFormDefinitions = () => {
-  listFormDefinitionsResult.innerHTML = "Loading...";
-
-  return userProfile
-    .formDefinitions()
-    .then((result) => {
-      buildFormDefinitionsList(result);
-    })
-    .catch((e) => {
-      listFormDefinitionsResult.innerHTML = e.message;
-    });
-};
-
 const handleListForms = () => {
   listFormDefinitionsResult.innerHTML = "Loading...";
 
@@ -263,7 +245,7 @@ const formDefinitionsInfo = (id: string) => {
 };
 
 const buildFormDefinitionsList = (
-  formDefinitions: FormDefinitionWithTags[]
+  formDefinitions: FormDefinition[]
 ) => {
   const table = document.createElement("table");
   table.className = "table table-bordered";
@@ -277,13 +259,6 @@ const buildFormDefinitionsList = (
 
     const tdFormName = document.createElement("td");
     tdFormName.appendChild(document.createTextNode(formDef.name));
-
-    const tdFormTags = document.createElement("td");
-    tdFormTags.appendChild(
-      document.createTextNode(
-        formDef.tags?.join(",") ?? "No hay tags definidos"
-      )
-    );
 
     const tdCreate = document.createElement("td");
     const btnCreate = document.createElement("button");
@@ -316,7 +291,6 @@ const buildFormDefinitionsList = (
 
     tr.appendChild(tdFormId);
     tr.appendChild(tdFormName);
-    tr.appendChild(tdFormTags);
     tr.appendChild(tdCreate);
     tr.appendChild(tdList);
     tr.appendChild(tdInfo);
@@ -448,11 +422,6 @@ document.addEventListener(
     signOutButton.addEventListener("click", handleSignOut);
     authentication.selectAccount();
     setAccountInfo();
-
-    listFormDefinitionsButton.addEventListener(
-      "click",
-      authentication.withAuthentication(handleListFormDefinitions)
-    );
 
     listForms.addEventListener(
       "click",

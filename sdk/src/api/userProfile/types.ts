@@ -7,8 +7,6 @@ export type FormDefinition = {
   displayDescription?: string;
 };
 
-export type FormDefinitionWithTags = FormDefinition & { tags?: string[] };
-
 export type FormDefinitionInfo = {
   formDefinitionId: string;
   name: string;

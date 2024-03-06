@@ -2,16 +2,7 @@ import getHttpRpaFormsClient from "../httpRpaFormsClient/httpRpaFormsClient";
 import {
   FormDefinition,
   FormDefinitionInfo,
-  FormDefinitionWithTags,
 } from "./types";
-
-export const formDefinitions = async () => {
-  const endpoint = `ConnectDashboard/launchForms`;
-  const response = await getHttpRpaFormsClient().get<FormDefinitionWithTags[]>(
-    endpoint
-  );
-  return response.data;
-};
 
 export const forms = async () => {
   const endpoint = `ConnectDashboard/forms`;

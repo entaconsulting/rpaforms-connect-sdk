@@ -8,7 +8,6 @@ import { msalConfig } from "../authentication/msalConfig";
 import {
   AuthenticationType,
   FormDefinition,
-  FormDefinitionWithTags,
   formInstance,
   FormInstanceListResult,
   initialize,
@@ -105,9 +104,6 @@ const configureAuth = () => {
 
 //mapeo de elementos de la página
 const signInButton = document.getElementById("SignIn") as HTMLButtonElement;
-const listFormDefinitionsButton = document.getElementById(
-  "ListFormDefinitions"
-) as HTMLButtonElement;
 const listForms = document.getElementById("ListForms") as HTMLButtonElement;
 const loadMoreButton = document.getElementById(
   "ListFormInstancesMore"
@@ -128,19 +124,6 @@ const listFormInstancesResult = document.getElementById(
 ) as HTMLDivElement;
 
 //listar los forms que el usuario puede crear
-const handleListFormDefinitions = () => {
-  listFormDefinitionsResult.innerHTML = "Loading...";
-
-  return userProfile
-    .formDefinitions()
-    .then((result) => {
-      buildFormDefinitionsList(result);
-    })
-    .catch((e) => {
-      listFormDefinitionsResult.innerHTML = e.message;
-    });
-};
-
 const handleListForms = () => {
   listFormDefinitionsResult.innerHTML = "Loading...";
 
@@ -253,7 +236,7 @@ const formDefinitionsInfo = (id: string) => {
 };
 
 const buildFormDefinitionsList = (
-  formDefinitions: FormDefinitionWithTags[]
+  formDefinitions: FormDefinition[]
 ) => {
   const table = document.createElement("table");
   table.className = "table table-bordered";
@@ -267,13 +250,6 @@ const buildFormDefinitionsList = (
 
     const tdFormName = document.createElement("td");
     tdFormName.appendChild(document.createTextNode(formDef.name));
-
-    const tdFormTags = document.createElement("td");
-    tdFormTags.appendChild(
-      document.createTextNode(
-        formDef.tags?.join(",") ?? "No hay tags definidos"
-      )
-    );
 
     const tdCreate = document.createElement("td");
     const btnCreate = document.createElement("button");
@@ -306,7 +282,6 @@ const buildFormDefinitionsList = (
 
     tr.appendChild(tdFormId);
     tr.appendChild(tdFormName);
-    tr.appendChild(tdFormTags);
     tr.appendChild(tdCreate);
     tr.appendChild(tdList);
     tr.appendChild(tdInfo);
@@ -408,11 +383,6 @@ document.addEventListener(
 
     signInButton.addEventListener("click", handleSignIn);
     setAccountInfo();
-
-    listFormDefinitionsButton.addEventListener(
-      "click",
-      handleListFormDefinitions
-    );
 
     listForms.addEventListener("click", handleListForms);
 
