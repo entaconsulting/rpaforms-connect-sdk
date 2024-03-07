@@ -12,4 +12,5 @@ export type FormDefinitionInfo = {
   name: string;
   description?: string;
   tags?: string[];
+  processInfoTags?: string[];
 };
