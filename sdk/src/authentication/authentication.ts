@@ -148,7 +148,6 @@ export const getTokenPopup = async () => {
     console.warn("silent token acquisition fails. acquiring token using popup");
     if (!(e instanceof InteractionRequiredAuthError)) {
       console.warn(e);
-      return;
     }
   }
 
