@@ -5,6 +5,7 @@ export type FormDefinition = {
   disabled: boolean;
   displayName?: string;
   displayDescription?: string;
+  canCreate: boolean;
 };
 
 export type FormDefinitionInfo = {
