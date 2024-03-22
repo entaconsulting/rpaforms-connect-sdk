@@ -44,6 +44,7 @@ export type FormInstanceQueryOptionsFilter = {
   processInfoTags?: Record<string, string>;
   processInfoUpdatedAtFrom?: Date;
   processInfoUpdatedAtTo?: Date;
+  createdBy?: string;
 };
 
 export type FormInstanceQueryOptions = {
