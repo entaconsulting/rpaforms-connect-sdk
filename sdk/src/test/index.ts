@@ -66,6 +66,9 @@ const filterProcessInfoUpdatedFromInput = document.getElementById(
 const filterProcessInfoUpdatedToInput = document.getElementById(
   "FilterProcessInfoUpdatedTo"
 ) as HTMLInputElement;
+const filterCreatedBy = document.getElementById(
+  "FilterCreatedBy"
+) as HTMLInputElement;
 const refreshInstancesButton = document.getElementById(
   "RefreshInstances"
 ) as HTMLButtonElement;
@@ -146,6 +149,10 @@ const handleListFormInstances = (addMore: boolean) => {
     filter.processInfoUpdatedAtTo = new Date(
       filterProcessInfoUpdatedToInput.value
     );
+  }
+  if (filterCreatedBy.value)
+  {
+    filter.createdBy = filterCreatedBy.value;  
   }
 
   formInstance
@@ -398,13 +405,13 @@ const buildFormInstancesList = (
     tr.appendChild(tdState);
     tr.appendChild(tdLastSaved);
     tr.appendChild(tdCreatedBy);
-    tr.appendChild(tdOpen);
-    tr.appendChild(tdDelete);
-    tr.appendChild(tdClone);
     tr.appendChild(tdProcessInfoStatus);
     tr.appendChild(tdProcessInfoEndState);
     tr.appendChild(tdProcessInfoCompletionMessage);
     tr.appendChild(tdProcessInfoUpdatedAt);
+    tr.appendChild(tdOpen);
+    tr.appendChild(tdDelete);
+    tr.appendChild(tdClone);
 
     tBody.appendChild(tr);
   });
