@@ -6,6 +6,7 @@ export type FormDefinition = {
   displayName?: string;
   displayDescription?: string;
   canCreate: boolean;
+  canViewOwnedInstancesOnly: boolean;
 };
 
 export type FormDefinitionInfo = {
